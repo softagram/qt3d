@@ -34,6 +34,7 @@
 #include <Qt3DRender/qtexturedata.h>
 
 #include <Qt3DRender/private/renderer_p.h>
+#include <Qt3DRender/private/glresourcemanagers_p.h>
 #include <Qt3DRender/private/texture_p.h>
 #include <Qt3DRender/private/textureimage_p.h>
 #include <Qt3DRender/private/texturedatamanager_p.h>
@@ -198,7 +199,8 @@ private Q_SLOTS:
         renderer.updateTexture(bt1b);
 
         // THEN
-        QCOMPARE(mgrs->glTextureManager()->lookupResource(bt1a->peerId()), mgrs->glTextureManager()->lookupResource(bt1b->peerId()));
+        QCOMPARE(renderer.glResourceManagers()->glTextureManager()->lookupResource(bt1a->peerId()),
+                 renderer.glResourceManagers()->glTextureManager()->lookupResource(bt1b->peerId()));
     }
 
     void shouldCreateDifferentGLTexturess()
@@ -232,11 +234,12 @@ private Q_SLOTS:
         // no 2 textures must be the same
         for (int i = 0; i < backend.size(); i++)
             for (int k = i+1; k < backend.size(); k++)
-                QVERIFY(mgrs->glTextureManager()->lookupResource(backend[i]->peerId()) != mgrs->glTextureManager()->lookupResource(backend[k]->peerId()));
+                QVERIFY(renderer.glResourceManagers()->glTextureManager()->lookupResource(backend[i]->peerId()) !=
+                        renderer.glResourceManagers()->glTextureManager()->lookupResource(backend[k]->peerId()));
 
         QVector<Qt3DRender::Render::GLTexture *> glTextures;
         for (Qt3DRender::Render::Texture *t : backend)
-            glTextures.push_back(mgrs->glTextureManager()->lookupResource(t->peerId()));
+            glTextures.push_back(renderer.glResourceManagers()->glTextureManager()->lookupResource(t->peerId()));
 
         // some texture generators must be the same
         QVERIFY(glTextures[0]->textureGenerator().data() == nullptr);
@@ -277,12 +280,12 @@ private Q_SLOTS:
             renderer.updateTexture(backendTexture);
         }
 
-        Qt3DRender::QTextureImageDataGeneratorPtr idg1a = mgrs->glTextureManager()->lookupResource(backend[0]->peerId())->images()[0].generator;
-        Qt3DRender::QTextureImageDataGeneratorPtr idg1b = mgrs->glTextureManager()->lookupResource(backend[1]->peerId())->images()[0].generator;
-        Qt3DRender::QTextureImageDataGeneratorPtr idg2 = mgrs->glTextureManager()->lookupResource(backend[1]->peerId())->images()[1].generator;
-        Qt3DRender::QTextureGeneratorPtr tg1a = mgrs->glTextureManager()->lookupResource(backend[0]->peerId())->textureGenerator();
-        Qt3DRender::QTextureGeneratorPtr tg1b = mgrs->glTextureManager()->lookupResource(backend[2]->peerId())->textureGenerator();
-        Qt3DRender::QTextureGeneratorPtr tg2 = mgrs->glTextureManager()->lookupResource(backend[1]->peerId())->textureGenerator();
+        Qt3DRender::QTextureImageDataGeneratorPtr idg1a = renderer.glResourceManagers()->glTextureManager()->lookupResource(backend[0]->peerId())->images()[0].generator;
+        Qt3DRender::QTextureImageDataGeneratorPtr idg1b = renderer.glResourceManagers()->glTextureManager()->lookupResource(backend[1]->peerId())->images()[0].generator;
+        Qt3DRender::QTextureImageDataGeneratorPtr idg2 = renderer.glResourceManagers()->glTextureManager()->lookupResource(backend[1]->peerId())->images()[1].generator;
+        Qt3DRender::QTextureGeneratorPtr tg1a = renderer.glResourceManagers()->glTextureManager()->lookupResource(backend[0]->peerId())->textureGenerator();
+        Qt3DRender::QTextureGeneratorPtr tg1b = renderer.glResourceManagers()->glTextureManager()->lookupResource(backend[2]->peerId())->textureGenerator();
+        Qt3DRender::QTextureGeneratorPtr tg2 = renderer.glResourceManagers()->glTextureManager()->lookupResource(backend[1]->peerId())->textureGenerator();
 
         // THEN
         QVERIFY(idg1a);

@@ -1,7 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2014 Klaralvdalens Datakonsult AB (KDAB).
-** Copyright (C) 2016 The Qt Company Ltd and/or its subsidiary(-ies).
+** Copyright (C) 2018 Klaralvdalens Datakonsult AB (KDAB).
 ** Contact: https://www.qt.io/licensing/
 **
 ** This file is part of the Qt3D module of the Qt Toolkit.
@@ -38,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_RENDERCOMMAND_H
-#define QT3DRENDER_RENDER_RENDERCOMMAND_H
+#ifndef QT3DRENDER_RENDER_OPENGL_HANDLE_TYPES_P_H
+#define QT3DRENDER_RENDER_OPENGL_HANDLE_TYPES_P_H
 
 //
 //  W A R N I N G
@@ -52,75 +51,19 @@
 // We mean it.
 //
 
-#include <qglobal.h>
-#include <Qt3DRender/private/shaderparameterpack_p.h>
-#include <Qt3DRender/private/handle_types_p.h>
-#include <Qt3DRender/private/gl_handle_types_p.h>
-#include <Qt3DRender/qgeometryrenderer.h>
-#include <QOpenGLShaderProgram>
-#include <QOpenGLTexture>
-#include <QMatrix4x4>
+#include <Qt3DCore/private/qhandle_p.h>
 
 QT_BEGIN_NAMESPACE
-
-class QOpenGLVertexArrayObject;
 
 namespace Qt3DRender {
 
 namespace Render {
 
-class RenderStateSet;
+class GLBuffer;
+class OpenGLVertexArrayObject;
 
-class Q_AUTOTEST_EXPORT RenderCommand
-{
-public:
-    RenderCommand();
-
-    HVao m_vao; // VAO used during the submission step to store all states and VBOs
-    HShader m_shader; // Shader for given pass and mesh
-    HMaterial m_material; // Purely used to ease sorting (minimize stage changes, binding changes ....)
-    ShaderParameterPack m_parameterPack; // Might need to be reworked so as to be able to destroy the
-                            // Texture while submission is happening.
-    RenderStateSet *m_stateSet;
-
-    HGeometry m_geometry;
-    HGeometryRenderer m_geometryRenderer;
-
-    HBuffer m_indirectDrawBuffer; // Reference to indirect draw buffer (valid only m_drawIndirect == true)
-
-    // A QAttribute pack might be interesting
-    // This is a temporary fix in the meantime, to remove the hacked methods in Technique
-    QVector<int> m_attributes;
-
-    float m_depth;
-    int m_changeCost;
-    uint m_shaderDna;
-
-    enum CommandType {
-        Draw,
-        Compute
-    };
-
-    CommandType m_type;
-    int m_workGroups[3];
-
-    // Values filled for draw calls
-    GLsizei m_primitiveCount;
-    QGeometryRenderer::PrimitiveType m_primitiveType;
-    int m_restartIndexValue;
-    int m_firstInstance;
-    int m_firstVertex;
-    int m_verticesPerPatch;
-    int m_instanceCount;
-    int m_indexOffset;
-    uint m_indexAttributeByteOffset;
-    GLint m_indexAttributeDataType;
-    uint m_indirectAttributeByteOffset;
-    bool m_drawIndexed;
-    bool m_drawIndirect;
-    bool m_primitiveRestartEnabled;
-    bool m_isValid;
-};
+typedef Qt3DCore::QHandle<GLBuffer> HGLBuffer;
+typedef Qt3DCore::QHandle<OpenGLVertexArrayObject> HVao;
 
 } // namespace Render
 
@@ -128,4 +71,4 @@ public:
 
 QT_END_NAMESPACE
 
-#endif // QT3DRENDER_RENDER_RENDERCOMMAND_H
+#endif // QT3DRENDER_RENDER_OPENGL_HANDLE_TYPES_P_H

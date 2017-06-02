@@ -9,7 +9,8 @@ SOURCES += \
     $$PWD/renderqueue.cpp \
     $$PWD/renderview.cpp \
     $$PWD/renderviewbuilder.cpp \
-    $$PWD/shaderparameterpack.cpp
+    $$PWD/shaderparameterpack.cpp \
+    $$PWD/glresourcemanagers.cpp
 
 HEADERS += \
     $$PWD/commandthread_p.h \

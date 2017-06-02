@@ -92,6 +92,10 @@
 #include <Qt3DRender/private/commandthread_p.h>
 #include <Qt3DRender/private/glcommands_p.h>
 
+#include <Qt3DRender/private/glresourcemanagers_p.h>
+#include <Qt3DRender/private/glbuffermanager_p.h>
+#include <Qt3DRender/private/vaomanager_p.h>
+
 #include <Qt3DRender/qcameralens.h>
 #include <Qt3DCore/private/qeventfilterservice_p.h>
 #include <Qt3DCore/private/qabstractaspectjobmanager_p.h>
@@ -194,6 +198,7 @@ Renderer::Renderer(QRenderAspect::RenderType type)
     , m_syncTextureLoadingJob(Render::GenericLambdaJobPtr<std::function<void ()>>::create([] {}, JobTypes::SyncTextureLoading))
     , m_ownedContext(false)
     , m_offscreenHelper(nullptr)
+    , m_glResourceManagers(nullptr)
     #if QT_CONFIG(qt3d_profile_jobs)
     , m_commandExecuter(new Qt3DRender::Debug::CommandExecuter(this))
     #endif
@@ -246,6 +251,7 @@ Renderer::~Renderer()
     delete m_renderQueue;
     delete m_defaultRenderStateSet;
     delete m_shaderCache;
+    delete m_glResourceManagers;
 
     if (!m_ownedContext)
         QObject::disconnect(m_contextConnection);
@@ -281,6 +287,7 @@ void Renderer::setTime(qint64 time)
 void Renderer::setNodeManagers(NodeManagers *managers)
 {
     m_nodesManager = managers;
+    m_glResourceManagers = new GLResourceManagers(m_nodesManager);
 
     m_updateShaderDataTransformJob->setManagers(m_nodesManager);
     m_cleanupJob->setManagers(m_nodesManager);
@@ -445,6 +452,12 @@ void Renderer::shutdown()
         m_submitRenderViewsSemaphore.release(1);
         m_renderThread->wait();
     }
+
+    // Destroy internal managers
+    // This needs to be done before the nodeManager is destroy
+    // as the internal resources might somehow rely on nodeManager resources
+    delete m_glResourceManagers;
+    m_glResourceManagers = nullptr;
 }
 
 /*!
@@ -482,21 +495,21 @@ void Renderer::releaseGraphicsResources()
     if (context->makeCurrent(offscreenSurface)) {
 
         // Clean up the graphics context and any resources
-        const QVector<GLTexture*> activeTextures = m_nodesManager->glTextureManager()->activeResources();
+        const QVector<GLTexture*> activeTextures = m_glResourceManagers->glTextureManager()->activeResources();
         for (GLTexture *tex : activeTextures)
             tex->destroyGLTexture();
 
         // Do the same thing with buffers
-        const QVector<HGLBuffer> activeBuffers = m_nodesManager->glBufferManager()->activeHandles();
+        const QVector<HGLBuffer> activeBuffers = m_glResourceManagers->glBufferManager()->activeHandles();
         for (const HGLBuffer &bufferHandle : activeBuffers) {
-            GLBuffer *buffer = m_nodesManager->glBufferManager()->data(bufferHandle);
+            GLBuffer *buffer = m_glResourceManagers->glBufferManager()->data(bufferHandle);
             buffer->destroy(m_submissionContext.data());
         }
 
         // Do the same thing with VAOs
-        const QVector<HVao> activeVaos = m_nodesManager->vaoManager()->activeHandles();
+        const QVector<HVao> activeVaos = m_glResourceManagers->vaoManager()->activeHandles();
         for (const HVao &vaoHandle : activeVaos) {
-            OpenGLVertexArrayObject *vao = m_nodesManager->vaoManager()->data(vaoHandle);
+            OpenGLVertexArrayObject *vao = m_glResourceManagers->vaoManager()->data(vaoHandle);
             vao->destroy();
         }
 
@@ -1006,9 +1019,9 @@ void Renderer::prepareCommandsSubmission(const QVector<RenderView *> &renderView
 // Executed in a job
 void Renderer::lookForAbandonedVaos()
 {
-    const QVector<HVao> activeVaos = m_nodesManager->vaoManager()->activeHandles();
-    for (const HVao &handle : activeVaos) {
-        OpenGLVertexArrayObject *vao = m_nodesManager->vaoManager()->data(handle);
+    const QVector<HVao> activeVaos = m_glResourceManagers->vaoManager()->activeHandles();
+    for (HVao handle : activeVaos) {
+        OpenGLVertexArrayObject *vao = m_glResourceManagers->vaoManager()->data(handle);
 
         // Make sure to only mark VAOs for deletion that were already created
         // (ignore those that might be currently under construction in the render thread)
@@ -1193,7 +1206,7 @@ void Renderer::updateTexture(Texture *texture)
     }
 
     // Try to find the associated GLTexture for the backend Texture
-    GLTextureManager *glTextureManager = m_nodesManager->glTextureManager();
+    GLTextureManager *glTextureManager = m_glResourceManagers->glTextureManager();
     GLTexture *glTexture = glTextureManager->lookupResource(texture->peerId());
 
     // No GLTexture associated yet -> create it
@@ -1261,7 +1274,7 @@ void Renderer::updateTexture(Texture *texture)
 // Render Thread
 void Renderer::cleanupTexture(const Texture *texture)
 {
-    GLTextureManager *glTextureManager = m_nodesManager->glTextureManager();
+    GLTextureManager *glTextureManager = m_glResourceManagers->glTextureManager();
     GLTexture *glTexture = glTextureManager->lookupResource(texture->peerId());
 
     if (glTexture != nullptr)
@@ -1800,7 +1813,7 @@ void Renderer::createOrUpdateVAO(RenderCommand *command,
 {
     const VAOIdentifier vaoKey(command->m_geometry, command->m_shader);
 
-    VAOManager *vaoManager = m_nodesManager->vaoManager();
+    VAOManager *vaoManager = m_glResourceManagers->vaoManager();
     command->m_vao = vaoManager->lookupHandle(vaoKey);
 
     if (command->m_vao.isNull()) {
@@ -1843,7 +1856,7 @@ bool Renderer::executeCommandsSubmission(const RenderView *rv)
                 continue;
             }
 
-            vao = m_nodesManager->vaoManager()->data(command->m_vao);
+            vao = m_glResourceManagers->vaoManager()->data(command->m_vao);
 
             // something may have went wrong when initializing the VAO
             if (!vao->isSpecified()) {
@@ -2002,7 +2015,7 @@ void Renderer::cleanGraphicsResources()
         m_submissionContext->releaseBuffer(bufferId);
 
     // Delete abandoned textures
-    const QVector<GLTexture*> abandonedTextures = m_nodesManager->glTextureManager()->takeAbandonedTextures();
+    const QVector<GLTexture*> abandonedTextures = m_glResourceManagers->glTextureManager()->takeAbandonedTextures();
     for (GLTexture *tex : abandonedTextures) {
         tex->destroyGLTexture();
         delete tex;
@@ -2015,10 +2028,10 @@ void Renderer::cleanGraphicsResources()
     for (const HVao &vaoHandle : abandonedVaos) {
         // might have already been destroyed last frame, but added by the cleanup job before, so
         // check if the VAO is really still existent
-        OpenGLVertexArrayObject *vao = m_nodesManager->vaoManager()->data(vaoHandle);
+        OpenGLVertexArrayObject *vao = m_glResourceManagers->vaoManager()->data(vaoHandle);
         if (vao) {
             vao->destroy();
-            m_nodesManager->vaoManager()->release(vaoHandle);
+            m_glResourceManagers->vaoManager()->release(vaoHandle);
         }
     }
 }

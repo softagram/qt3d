@@ -56,6 +56,7 @@
 #include <Qt3DRender/qtechnique.h>
 #include <Qt3DRender/private/shaderparameterpack_p.h>
 #include <Qt3DRender/private/handle_types_p.h>
+#include <Qt3DRender/private/gl_handle_types_p.h>
 #include <Qt3DRender/private/abstractrenderer_p.h>
 #include <Qt3DCore/qaspectjob.h>
 #include <Qt3DRender/private/qt3drender_global_p.h>
@@ -143,6 +144,7 @@ class VSyncFrameAdvanceService;
 class PickEventFilter;
 class NodeManagers;
 class ShaderCache;
+class GLResourceManagers;
 
 class UpdateLevelOfDetailJob;
 typedef QSharedPointer<UpdateLevelOfDetailJob> UpdateLevelOfDetailJobPtr;
@@ -224,6 +226,7 @@ public:
     RenderSettings *settings() const override;
     QOpenGLContext *shareContext() const override;
 
+    inline GLResourceManagers *glResourceManagers() const { return m_glResourceManagers; }
 
     // Executed in secondary GL thread
     void loadShader(Shader *shader) const override;
@@ -387,6 +390,7 @@ private:
     bool m_ownedContext;
 
     OffscreenSurfaceHelper *m_offscreenHelper;
+    GLResourceManagers *m_glResourceManagers;
     QMutex m_offscreenSurfaceMutex;
 
 #if QT_CONFIG(qt3d_profile_jobs)

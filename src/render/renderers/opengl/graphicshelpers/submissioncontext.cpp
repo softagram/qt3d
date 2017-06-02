@@ -53,13 +53,16 @@
 #include <Qt3DRender/private/rendertarget_p.h>
 #include <Qt3DRender/private/graphicshelperinterface_p.h>
 #include <Qt3DRender/private/renderer_p.h>
+#include <Qt3DRender/private/glresourcemanagers_p.h>
 #include <Qt3DRender/private/nodemanagers_p.h>
 #include <Qt3DRender/private/buffermanager_p.h>
 #include <Qt3DRender/private/managers_p.h>
 #include <Qt3DRender/private/gltexturemanager_p.h>
+#include <Qt3DRender/private/glbuffermanager_p.h>
 #include <Qt3DRender/private/attachmentpack_p.h>
 #include <Qt3DRender/private/qbuffer_p.h>
 #include <Qt3DRender/private/renderbuffer_p.h>
+#include <Qt3DRender/private/openglvertexarrayobject_p.h>
 #include <QOpenGLShaderProgram>
 
 #if !defined(QT_OPENGL_ES_2)
@@ -524,7 +527,7 @@ GLuint SubmissionContext::updateRenderTarget(Qt3DCore::QNodeId renderTargetNodeI
     bool needsResize = !m_renderTargetsSize.contains(fboId);    // not even initialized yet?
     if (!needsResize) {
         // render target exists, has attachment been resized?
-        GLTextureManager *glTextureManager = m_renderer->nodeManagers()->glTextureManager();
+        GLTextureManager *glTextureManager = m_renderer->glResourceManagers()->glTextureManager();
         const QSize s = m_renderTargetsSize[fboId];
         const auto attachments_ = attachments.attachments();
         for (const Attachment &attachment : attachments_) {
@@ -820,7 +823,7 @@ void SubmissionContext::bindFrameBufferAttachmentHelper(GLuint fboId, const Atta
     // stencil before 3.1 with the appropriate extension).
 
     QSize fboSize;
-    GLTextureManager *glTextureManager = m_renderer->nodeManagers()->glTextureManager();
+    GLTextureManager *glTextureManager = m_renderer->glResourceManagers()->glTextureManager();
     const auto attachments_ = attachments.attachments();
     for (const Attachment &attachment : attachments_) {
         GLTexture *rTex = glTextureManager->lookupResource(attachment.m_textureUuid);
@@ -1213,8 +1216,6 @@ bool SubmissionContext::setParameters(ShaderParameterPack &parameterPack)
 
     // Set the pinned texture of the previous material texture
     // to pinable so that we should easily find an available texture unit
-    NodeManagers *manager = m_renderer->nodeManagers();
-
     deactivateTexturesWithScope(TextureScopeMaterial);
     // Update the uniforms with the correct texture unit id's
     PackUniformHash &uniformValues = parameterPack.uniforms();
@@ -1223,7 +1224,7 @@ bool SubmissionContext::setParameters(ShaderParameterPack &parameterPack)
         const ShaderParameterPack::NamedTexture &namedTex = parameterPack.textures().at(i);
         // Given a Texture QNodeId, we retrieve the associated shared GLTexture
         if (uniformValues.contains(namedTex.glslNameId)) {
-            GLTexture *t = manager->glTextureManager()->lookupResource(namedTex.texId);
+            GLTexture *t = m_renderer->glResourceManagers()->glTextureManager()->lookupResource(namedTex.texId);
             if (t != nullptr) {
                 UniformValue &texUniform = uniformValues[namedTex.glslNameId];
                 Q_ASSERT(texUniform.valueType() == UniformValue::TextureValue);
@@ -1291,7 +1292,7 @@ bool SubmissionContext::setParameters(ShaderParameterPack &parameterPack)
 void SubmissionContext::enableAttribute(const VAOVertexAttribute &attr)
 {
     // Bind buffer within the current VAO
-    GLBuffer *buf = m_renderer->nodeManagers()->glBufferManager()->data(attr.bufferHandle);
+    GLBuffer *buf = m_renderer->glResourceManagers()->glBufferManager()->data(attr.bufferHandle);
     Q_ASSERT(buf);
     bindGLBuffer(buf, attr.attributeType);
 
@@ -1330,7 +1331,7 @@ void SubmissionContext::specifyAttribute(const Attribute *attribute,
     }
 
     const GLint attributeDataType = glDataTypeFromAttributeDataType(attribute->vertexBaseType());
-    const HGLBuffer glBufferHandle = m_renderer->nodeManagers()->glBufferManager()->lookupHandle(buffer->peerId());
+    const HGLBuffer glBufferHandle = m_renderer->glResourceManagers()->glBufferManager()->lookupHandle(buffer->peerId());
     Q_ASSERT(!glBufferHandle.isNull());
     const GLBuffer::Type attributeType = attributeTypeToGLBufferType(attribute->attributeType());
 
@@ -1379,21 +1380,21 @@ void SubmissionContext::specifyIndices(Buffer *buffer)
     // bound within the current VAO
     // Save this in the current emulated VAO
     if (m_currentVAO)
-        m_currentVAO->saveIndexAttribute(m_renderer->nodeManagers()->glBufferManager()->lookupHandle(buffer->peerId()));
+        m_currentVAO->saveIndexAttribute(m_renderer->glResourceManagers()->glBufferManager()->lookupHandle(buffer->peerId()));
 }
 
 void SubmissionContext::updateBuffer(Buffer *buffer)
 {
     const QHash<Qt3DCore::QNodeId, HGLBuffer>::iterator it = m_renderBufferHash.find(buffer->peerId());
     if (it != m_renderBufferHash.end())
-        uploadDataToGLBuffer(buffer, m_renderer->nodeManagers()->glBufferManager()->data(it.value()));
+        uploadDataToGLBuffer(buffer, m_renderer->glResourceManagers()->glBufferManager()->data(it.value()));
 }
 
 QByteArray SubmissionContext::downloadBufferContent(Buffer *buffer)
 {
     const QHash<Qt3DCore::QNodeId, HGLBuffer>::iterator it = m_renderBufferHash.find(buffer->peerId());
     if (it != m_renderBufferHash.end())
-        return downloadDataFromGLBuffer(buffer, m_renderer->nodeManagers()->glBufferManager()->data(it.value()));
+        return downloadDataFromGLBuffer(buffer, m_renderer->glResourceManagers()->glBufferManager()->data(it.value()));
     return QByteArray();
 }
 
@@ -1402,13 +1403,13 @@ void SubmissionContext::releaseBuffer(Qt3DCore::QNodeId bufferId)
     auto it = m_renderBufferHash.find(bufferId);
     if (it != m_renderBufferHash.end()) {
         HGLBuffer glBuffHandle = it.value();
-        GLBuffer *glBuff = m_renderer->nodeManagers()->glBufferManager()->data(glBuffHandle);
+        GLBuffer *glBuff = m_renderer->glResourceManagers()->glBufferManager()->data(glBuffHandle);
 
         Q_ASSERT(glBuff);
         // Destroy the GPU resource
         glBuff->destroy(this);
         // Destroy the GLBuffer instance
-        m_renderer->nodeManagers()->glBufferManager()->releaseResource(bufferId);
+        m_renderer->glResourceManagers()->glBufferManager()->releaseResource(bufferId);
         // Remove Id - HGLBuffer entry
         m_renderBufferHash.erase(it);
     }
@@ -1424,12 +1425,12 @@ GLBuffer *SubmissionContext::glBufferForRenderBuffer(Buffer *buf, GLBuffer::Type
 {
     if (!m_renderBufferHash.contains(buf->peerId()))
         m_renderBufferHash.insert(buf->peerId(), createGLBufferFor(buf, type));
-    return m_renderer->nodeManagers()->glBufferManager()->data(m_renderBufferHash.value(buf->peerId()));
+    return m_renderer->glResourceManagers()->glBufferManager()->data(m_renderBufferHash.value(buf->peerId()));
 }
 
 HGLBuffer SubmissionContext::createGLBufferFor(Buffer *buffer, GLBuffer::Type type)
 {
-    GLBuffer *b = m_renderer->nodeManagers()->glBufferManager()->getOrCreateResource(buffer->peerId());
+    GLBuffer *b = m_renderer->glResourceManagers()->glBufferManager()->getOrCreateResource(buffer->peerId());
     //    b.setUsagePattern(static_cast<QOpenGLBuffer::UsagePattern>(buffer->usage()));
     Q_ASSERT(b);
     if (!b->create(this))
@@ -1438,7 +1439,7 @@ HGLBuffer SubmissionContext::createGLBufferFor(Buffer *buffer, GLBuffer::Type ty
     if (!bindGLBuffer(b, type))
         qCWarning(Render::Io) << Q_FUNC_INFO << "buffer binding failed";
 
-    return m_renderer->nodeManagers()->glBufferManager()->lookupHandle(buffer->peerId());
+    return m_renderer->glResourceManagers()->glBufferManager()->lookupHandle(buffer->peerId());
 }
 
 bool SubmissionContext::bindGLBuffer(GLBuffer *buffer, GLBuffer::Type type)
