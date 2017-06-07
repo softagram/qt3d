@@ -70,6 +70,7 @@ namespace Qt3DRender {
 namespace Render {
 
 class RenderStateSet;
+class GLShader;
 
 class Q_AUTOTEST_EXPORT RenderCommand
 {
@@ -77,8 +78,9 @@ public:
     RenderCommand();
 
     HVao m_vao; // VAO used during the submission step to store all states and VBOs
-    HShader m_shader; // Shader for given pass and mesh
     HMaterial m_material; // Purely used to ease sorting (minimize stage changes, binding changes ....)
+    GLShader *m_glShader; // GL Shader to be used at render time
+    Qt3DCore::QNodeId m_shaderId; // Shader for given pass and mesh
     ShaderParameterPack m_parameterPack; // Might need to be reworked so as to be able to destroy the
                             // Texture while submission is happening.
     RenderStateSet *m_stateSet;
@@ -94,7 +96,6 @@ public:
 
     float m_depth;
     int m_changeCost;
-    uint m_shaderDna;
 
     enum CommandType {
         Draw,

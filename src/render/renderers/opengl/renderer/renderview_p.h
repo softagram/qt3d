@@ -283,7 +283,7 @@ public:
 
 private:
     void setShaderAndUniforms(RenderCommand *command,
-                              RenderPass *pass,
+                              GLShader *shader,
                               ParameterInfoList &parameters,
                               Entity *entity,
                               const QVector<LightSource> &activeLightSources,
@@ -371,15 +371,15 @@ private:
                                  Entity *entity,
                                  const Matrix4x4 &worldTransform) const;
     void setUniformBlockValue(ShaderParameterPack &uniformPack,
-                              Shader *shader,
+                              GLShader *shader,
                               const ShaderUniformBlock &block,
                               const UniformValue &value) const;
     void setShaderStorageValue(ShaderParameterPack &uniformPack,
-                               Shader *shader,
+                               GLShader *shader,
                                const ShaderStorageBlock &block,
                                const UniformValue &value) const;
     void setDefaultUniformBlockShaderDataValue(ShaderParameterPack &uniformPack,
-                                               Shader *shader,
+                                               GLShader *shader,
                                                ShaderData *shaderData,
                                                const QString &structName) const;
 };

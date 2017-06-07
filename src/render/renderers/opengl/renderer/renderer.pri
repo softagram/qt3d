@@ -10,7 +10,8 @@ SOURCES += \
     $$PWD/renderview.cpp \
     $$PWD/renderviewbuilder.cpp \
     $$PWD/shaderparameterpack.cpp \
-    $$PWD/glresourcemanagers.cpp
+    $$PWD/glresourcemanagers.cpp \
+    $$PWD/glshader.cpp
 
 HEADERS += \
     $$PWD/commandthread_p.h \
@@ -23,6 +24,6 @@ HEADERS += \
     $$PWD/renderview_p.h \
     $$PWD/renderviewbuilder_p.h \
     $$PWD/shaderparameterpack_p.h \
-    $$PWD/shadervariables_p.h
-
+    $$PWD/shadervariables_p.h \
+    $$PWD/glshader_p.h
 

@@ -60,6 +60,7 @@ namespace Qt3DRender {
 namespace Render {
 
 class GLBufferManager;
+class GLShaderManager;
 class GLTextureManager;
 class NodeManagers;
 class VAOManager;
@@ -71,12 +72,14 @@ public:
     ~GLResourceManagers();
 
     inline VAOManager *vaoManager() const Q_DECL_NOEXCEPT { return m_vaoManager; }
+    inline GLShaderManager *glShaderManager() const Q_DECL_NOEXCEPT { return m_glShaderManager; }
     inline GLTextureManager *glTextureManager() const Q_DECL_NOEXCEPT { return m_glTextureManager; }
     inline GLBufferManager *glBufferManager() const Q_DECL_NOEXCEPT { return m_glBufferManager; }
 
 private:
     NodeManagers *m_nodeManagers;
     GLBufferManager *m_glBufferManager;
+    GLShaderManager *m_glShaderManager;
     GLTextureManager *m_glTextureManager;
     VAOManager *m_vaoManager;
 };

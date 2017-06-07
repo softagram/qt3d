@@ -30,7 +30,6 @@ HEADERS += \
     $$PWD/technique_p.h \
     $$PWD/qgraphicsapifilter.h \
     $$PWD/qgraphicsapifilter_p.h \
-    $$PWD/shadercache_p.h \
     $$PWD/techniquemanager_p.h
 
 SOURCES += \
@@ -53,7 +52,6 @@ SOURCES += \
     $$PWD/shaderdata.cpp \
     $$PWD/technique.cpp \
     $$PWD/qgraphicsapifilter.cpp \
-    $$PWD/shadercache.cpp \
     $$PWD/techniquemanager.cpp
 
 RESOURCES += \

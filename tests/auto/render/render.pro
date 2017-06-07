@@ -41,7 +41,6 @@ qtConfig(private_tests) {
 #        qboundingvolumedebug \
 #        boundingvolumedebug \
         ddstextures \
-        shadercache \
         layerfiltering \
         filterentitybycomponent \
         genericlambdajob \
@@ -122,6 +121,7 @@ qtConfig(qt3d-opengl-renderer):qtConfig(private_tests) {
         graphicshelpergl3_3 \
         graphicshelpergl3_2 \
         graphicshelpergl2 \
+        glshadermanager \
         materialparametergathererjob \
         textures \
         scene2d \

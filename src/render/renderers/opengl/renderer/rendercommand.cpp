@@ -45,7 +45,8 @@ namespace Qt3DRender {
 namespace Render {
 
 RenderCommand::RenderCommand()
-    : m_stateSet(nullptr)
+    : m_glShader(nullptr)
+    , m_stateSet(nullptr)
     , m_depth(0.0f)
     , m_changeCost(0)
     , m_type(RenderCommand::Draw)

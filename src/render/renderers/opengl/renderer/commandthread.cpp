@@ -41,7 +41,6 @@
 #include <Qt3DRender/private/glcommands_p.h>
 #include <Qt3DRender/private/offscreensurfacehelper_p.h>
 #include <Qt3DRender/private/graphicscontext_p.h>
-#include <Qt3DRender/private/shadercache_p.h>
 #include <QOpenGLContext>
 #include <QOffscreenSurface>
 #include <QDebug>
@@ -60,7 +59,6 @@ CommandThread::CommandThread(Renderer *renderer)
     , m_commandRequestedSemaphore(0)
     , m_commandExecutionSemaphore(0)
     , m_mainContext(nullptr)
-    , m_shaderCache(nullptr)
     , m_offsreenSurfaceHelper(nullptr)
     , m_currentCommand(nullptr)
     , m_running(0)
@@ -70,11 +68,6 @@ CommandThread::CommandThread(Renderer *renderer)
 CommandThread::~CommandThread()
 {
     Q_ASSERT(!isRunning());
-}
-
-void CommandThread::setShaderCache(ShaderCache *shaderCache)
-{
-    m_shaderCache = shaderCache;
 }
 
 // Called by RenderThread or MainThread (Scene3d)
@@ -162,11 +155,10 @@ void CommandThread::run()
     // Wait for initialize to be completed
     m_initializedSemaphore.acquire();
 
-    Q_ASSERT(m_mainContext && m_shaderCache);
+    Q_ASSERT(m_mainContext);
 
     // Initialize GraphicsContext
     m_graphicsContext.reset(new GraphicsContext());
-    m_graphicsContext->setShaderCache(m_shaderCache);
     m_graphicsContext->setOpenGLContext(m_localContext.data());
 
     bool initialized = false;

@@ -67,7 +67,6 @@ class Renderer;
 class GLCommand;
 class OffscreenSurfaceHelper;
 class GraphicsContext;
-class ShaderCache;
 
 class CommandThread : public QThread
 {
@@ -77,9 +76,6 @@ public:
     ~CommandThread();
 
     Render::Renderer* renderer() const { return m_renderer; }
-
-    void setShaderCache(ShaderCache *shaderCache);
-    ShaderCache *shaderCache() const { return m_shaderCache; }
 
     void initialize(QOpenGLContext *mainContext, OffscreenSurfaceHelper *offsreenSurfaceHelper);
     void shutdown();
@@ -98,7 +94,6 @@ private:
     QSemaphore m_commandExecutionSemaphore;
     QMutex m_blockingCallerMutex;
     QOpenGLContext *m_mainContext;
-    ShaderCache *m_shaderCache;
     OffscreenSurfaceHelper *m_offsreenSurfaceHelper;
     QScopedPointer<QOpenGLContext> m_localContext;
     QScopedPointer<GraphicsContext> m_graphicsContext;

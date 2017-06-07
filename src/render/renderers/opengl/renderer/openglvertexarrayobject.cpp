@@ -42,6 +42,7 @@
 #include <Qt3DRender/private/renderer_p.h>
 #include <Qt3DRender/private/glresourcemanagers_p.h>
 #include <Qt3DRender/private/glbuffermanager_p.h>
+#include <Qt3DRender/private/glshadermanager_p.h>
 #include <Qt3DRender/private/managers_p.h>
 
 QT_BEGIN_NAMESPACE
@@ -129,7 +130,7 @@ void OpenGLVertexArrayObject::cleanup()
 }
 
 // called from job
-bool OpenGLVertexArrayObject::isAbandoned(GeometryManager *geomMgr, ShaderManager *shaderMgr)
+bool OpenGLVertexArrayObject::isAbandoned(GeometryManager *geomMgr, GLShaderManager *shaderMgr)
 {
     QMutexLocker lock(&m_mutex);
 
@@ -137,7 +138,7 @@ bool OpenGLVertexArrayObject::isAbandoned(GeometryManager *geomMgr, ShaderManage
         return false;
 
     const bool geometryExists = (geomMgr->data(m_owners.first) != nullptr);
-    const bool shaderExists = (shaderMgr->data(m_owners.second) != nullptr);
+    const bool shaderExists = (shaderMgr->lookupResource(m_owners.second) != nullptr);
 
     return !geometryExists || !shaderExists;
 }

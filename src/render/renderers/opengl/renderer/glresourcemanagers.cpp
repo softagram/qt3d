@@ -40,6 +40,7 @@
 #include "glresourcemanagers_p.h"
 #include <Qt3DRender/private/nodemanagers_p.h>
 #include <Qt3DRender/private/glbuffermanager_p.h>
+#include <Qt3DRender/private/glshadermanager_p.h>
 #include <Qt3DRender/private/gltexturemanager_p.h>
 #include <Qt3DRender/private/vaomanager_p.h>
 
@@ -56,6 +57,7 @@ namespace Render {
 GLResourceManagers::GLResourceManagers(NodeManagers *nodeManagers)
     : m_nodeManagers(nodeManagers)
     , m_glBufferManager(new GLBufferManager())
+    , m_glShaderManager(new GLShaderManager())
     , m_glTextureManager(new GLTextureManager(nodeManagers->textureImageManager(),
                                               nodeManagers->textureDataManager(),
                                               nodeManagers->textureImageDataManager()))
@@ -66,6 +68,7 @@ GLResourceManagers::GLResourceManagers(NodeManagers *nodeManagers)
 GLResourceManagers::~GLResourceManagers()
 {
     delete m_glTextureManager;
+    delete m_glShaderManager;
     delete m_glBufferManager;
     delete m_vaoManager;
 }
