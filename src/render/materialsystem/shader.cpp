@@ -62,6 +62,7 @@ namespace Render {
 Shader::Shader()
     : BackendNode(ReadWrite)
     , m_status(QShaderProgram::NotReady)
+    , m_format(QShaderProgram::GLSL)
     , m_dirty(false)
 {
     m_shaderCode.resize(static_cast<int>(QShaderProgram::Compute) + 1);
@@ -75,6 +76,7 @@ void Shader::cleanup()
 {
     QBackendNode::setEnabled(false);
     m_status = QShaderProgram::NotReady;
+    m_format = QShaderProgram::GLSL;
     m_log.clear();
     m_dirty = false;
 }
@@ -93,6 +95,7 @@ void Shader::initializeFromPeer(const Qt3DCore::QNodeCreatedChangeBasePtr &chang
     m_shaderCode[QShaderProgram::Geometry] = data.geometryShaderCode;
     m_shaderCode[QShaderProgram::Fragment] = data.fragmentShaderCode;
     m_shaderCode[QShaderProgram::Compute] = data.computeShaderCode;
+    m_format = data.format;
     m_dirty = true;
     markDirty(AbstractRenderer::ShadersDirty);
 }
@@ -126,9 +129,21 @@ void Shader::sceneChangeEvent(const Qt3DCore::QSceneChangePtr &e)
             setShaderCode(QShaderProgram::Geometry, propertyValue.toByteArray());
         else if (propertyChange->propertyName() == QByteArrayLiteral("computeShaderCode"))
             setShaderCode(QShaderProgram::Compute, propertyValue.toByteArray());
+        else if (propertyChange->propertyName() == QByteArrayLiteral("format"))
+            setFormat(propertyValue.value<QShaderProgram::Format>());
     }
 
     BackendNode::sceneChangeEvent(e);
+}
+
+void Shader::setFormat(QShaderProgram::Format format)
+{
+    if (format == m_format)
+        return;
+    m_format = format;
+    m_dirty = true;
+    setStatus(QShaderProgram::NotReady);
+    markDirty(AbstractRenderer::ShadersDirty);
 }
 
 QVector<QByteArray> Shader::shaderCode() const
