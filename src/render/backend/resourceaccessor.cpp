@@ -40,13 +40,9 @@
 
 #include <private/qrendertargetoutput_p.h>
 #include <private/nodemanagers_p.h>
-#include <private/texture_p.h>
 #include <private/rendertargetoutput_p.h>
-#include <private/texturedatamanager_p.h>
-//#include <private/gltexturemanager_p.h>
 #include <private/managers_p.h>
-//#include <private/gltexture_p.h>
-
+#include <Qt3DRender/qt3drender-config.h>
 #include <QtCore/qmutex.h>
 
 QT_BEGIN_NAMESPACE
@@ -59,61 +55,59 @@ RenderBackendResourceAccessor::~RenderBackendResourceAccessor()
 
 }
 
-ResourceAccessor::ResourceAccessor(NodeManagers *mgr)
-//    : m_glTextureManager(mgr->glTextureManager())
-//    , m_textureManager(mgr->textureManager())
-//    , m_attachmentManager(mgr->attachmentManager())
-//    , m_entityManager(mgr->renderNodesManager())
+ResourceAccessor::ResourceAccessor(AbstractRenderer *renderer, NodeManagers *mgr)
+    : m_renderer(renderer)
+    , m_textureManager(mgr->textureManager())
+    , m_attachmentManager(mgr->attachmentManager())
+    , m_entityManager(mgr->renderNodesManager())
 {
 
 }
 
 // called by render plugins from arbitrary thread
-bool ResourceAccessor::accessResource(ResourceType type, Qt3DCore::QNodeId nodeId, void **handle, QMutex **lock)
+bool ResourceAccessor::accessResource(ResourceType type,
+                                      Qt3DCore::QNodeId nodeId,
+                                      void **handle,
+                                      QMutex **lock)
 {
-//    switch (type) {
+    switch (type) {
 
-//    case RenderBackendResourceAccessor::OGLTexture: {
-//        Texture *tex = m_textureManager->lookupResource(nodeId);
-//        if (!tex)
-//            return false;
+    // This is purely made so that Scene2D works, this should be completely
+    // redesigned to avoid introducing this kind of coupling and reliance on
+    // OpenGL
+    case RenderBackendResourceAccessor::OGLTexture: {
+        if (m_renderer->api() != AbstractRenderer::OpenGL) {
+            qWarning() << "Renderer plugin is not compatible with Scene2D";
+            return false;
+        }
+        return m_renderer->accessOpenGLTexture(nodeId,
+                                               reinterpret_cast<QOpenGLTexture **>(handle),
+                                               lock);
+    }
 
-//        GLTexture *glTex = m_glTextureManager->lookupResource(tex->peerId());
-//        if (!glTex)
-//            return false;
+    case RenderBackendResourceAccessor::OutputAttachment: {
+        RenderTargetOutput *output = m_attachmentManager->lookupResource(nodeId);
+        if (output) {
+            Attachment **attachmentData = reinterpret_cast<Attachment **>(handle);
+            *attachmentData = output->attachment();
+            return true;
+        }
+        break;
+    }
 
-//        if (glTex->isDirty())
-//            return false;
+    case RenderBackendResourceAccessor::EntityHandle: {
+        Entity *entity = m_entityManager->lookupResource(nodeId);
+        if (entity) {
+            Entity **pEntity = reinterpret_cast<Entity **>(handle);
+            *pEntity = entity;
+            return true;
+        }
+        break;
+    }
 
-//        QOpenGLTexture **glTextureHandle = reinterpret_cast<QOpenGLTexture **>(handle);
-//        *glTextureHandle = glTex->getOrCreateGLTexture();
-//        *lock = glTex->textureLock();
-//        return true;
-//    }
-
-//    case RenderBackendResourceAccessor::OutputAttachment: {
-//        RenderTargetOutput *output = m_attachmentManager->lookupResource(nodeId);
-//        if (output) {
-//            Attachment **attachmentData = reinterpret_cast<Attachment **>(handle);
-//            *attachmentData = output->attachment();
-//            return true;
-//        }
-//        break;
-//    }
-
-//    case RenderBackendResourceAccessor::EntityHandle: {
-//        Entity *entity = m_entityManager->lookupResource(nodeId);
-//        if (entity) {
-//            Entity **pEntity = reinterpret_cast<Entity **>(handle);
-//            *pEntity = entity;
-//            return true;
-//        }
-//        break;
-//    }
-
-//    default:
-//        break;
-//    }
+    default:
+        break;
+    }
     return false;
 }
 

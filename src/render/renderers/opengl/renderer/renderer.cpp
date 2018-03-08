@@ -101,6 +101,7 @@
 #include <Qt3DCore/private/qeventfilterservice_p.h>
 #include <Qt3DCore/private/qabstractaspectjobmanager_p.h>
 #include <Qt3DCore/private/qnodecreatedchangegenerator_p.h>
+#include <Qt3DRender/private/resourceaccessor_p.h>
 
 #if QT_CONFIG(qt3d_profile_jobs)
 #include <Qt3DCore/private/aspectcommanddebugger_p.h>
@@ -287,6 +288,7 @@ void Renderer::setNodeManagers(NodeManagers *managers)
 {
     m_nodesManager = managers;
     m_glResourceManagers = new GLResourceManagers(m_nodesManager);
+    m_scene2DResourceAccessor.reset(new ResourceAccessor(this, m_nodesManager));
 
     m_updateShaderDataTransformJob->setManagers(m_nodesManager);
     m_cleanupJob->setManagers(m_nodesManager);
@@ -339,6 +341,29 @@ void Renderer::loadShader(Shader *shader) const
 void Renderer::setOpenGLContext(QOpenGLContext *context)
 {
     m_glContext = context;
+}
+
+bool Renderer::accessOpenGLTexture(Qt3DCore::QNodeId nodeId, QOpenGLTexture **texture, QMutex **lock)
+{
+    Texture *tex = m_nodesManager->textureManager()->lookupResource(nodeId);
+    if (!tex)
+        return false;
+
+    GLTexture *glTex = m_glResourceManagers->glTextureManager()->lookupResource(tex->peerId());
+    if (!glTex)
+        return false;
+
+    if (glTex->isDirty())
+        return false;
+
+    *texture = glTex->getOrCreateGLTexture();
+    *lock = glTex->textureLock();
+    return true;
+}
+
+QSharedPointer<RenderBackendResourceAccessor> Renderer::resourceAccessor() const
+{
+    return m_scene2DResourceAccessor;
 }
 
 // Called in RenderThread context by the run method of RenderThread

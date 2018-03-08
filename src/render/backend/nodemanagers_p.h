@@ -138,7 +138,6 @@ class Armature;
 class Skeleton;
 class Joint;
 
-class ResourceAccessor;
 
 class QT3DRENDERSHARED_PRIVATE_EXPORT NodeManagers
 {
@@ -218,8 +217,6 @@ public:
     inline SkeletonManager *skeletonManager() const Q_DECL_NOEXCEPT { return m_skeletonManager; }
     inline JointManager *jointManager() const Q_DECL_NOEXCEPT { return m_jointManager; }
 
-    QSharedPointer<ResourceAccessor> resourceAccessor();
-
 private:
     CameraManager *m_cameraManager;
     EntityManager *m_renderNodesManager;
@@ -258,8 +255,6 @@ private:
     ArmatureManager *m_armatureManager;
     SkeletonManager *m_skeletonManager;
     JointManager *m_jointManager;
-
-    QSharedPointer<ResourceAccessor> m_resourceAccessor;
 };
 
 // Specializations

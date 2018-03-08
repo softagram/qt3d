@@ -62,8 +62,6 @@ namespace Qt3DRender {
 
 namespace Render {
 
-class RenderBackendResourceAccessor;
-
 class QT3DRENDERSHARED_PRIVATE_EXPORT BackendNode : public Qt3DCore::QBackendNode
 {
 public:
@@ -73,7 +71,7 @@ public:
     void setRenderer(AbstractRenderer *renderer);
     AbstractRenderer *renderer() const;
 
-    QSharedPointer<RenderBackendResourceAccessor> resourceAccessor();
+    QSharedPointer<RenderBackendResourceAccessor> resourceAccessor() const;
 
 protected:
     void markDirty(AbstractRenderer::BackendNodeDirtySet changes);

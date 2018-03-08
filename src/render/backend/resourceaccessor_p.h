@@ -68,6 +68,7 @@ class AttachmentManager;
 class GLTextureManager;
 class EntityManager;
 class NodeManagers;
+class AbstractRenderer;
 
 class RenderBackendResourceAccessor
 {
@@ -85,13 +86,13 @@ public:
 class QT3DRENDERSHARED_PRIVATE_EXPORT ResourceAccessor : public RenderBackendResourceAccessor
 {
 public:
-    ResourceAccessor(NodeManagers *mgr);
+    ResourceAccessor(AbstractRenderer *renderer, NodeManagers *mgr);
     bool accessResource(ResourceType type, Qt3DCore::QNodeId nodeId, void **handle, QMutex **lock) final;
 private:
-//    GLTextureManager *m_glTextureManager;
-//    TextureManager *m_textureManager;
-//    AttachmentManager *m_attachmentManager;
-//    EntityManager *m_entityManager;
+    AbstractRenderer *m_renderer;
+    TextureManager *m_textureManager;
+    AttachmentManager *m_attachmentManager;
+    EntityManager *m_entityManager;
 };
 
 } // namespace Render
