@@ -179,7 +179,7 @@ private Q_SLOTS:
     void shouldCreateSameGLTextures()
     {
         QScopedPointer<Qt3DRender::Render::NodeManagers> mgrs(new Qt3DRender::Render::NodeManagers());
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Qt3DRender::Render::OpenGL::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         renderer.setNodeManagers(mgrs.data());
 
         // GIVEN
@@ -206,7 +206,7 @@ private Q_SLOTS:
     void shouldCreateDifferentGLTexturess()
     {
         QScopedPointer<Qt3DRender::Render::NodeManagers> mgrs(new Qt3DRender::Render::NodeManagers());
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Qt3DRender::Render::OpenGL::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         renderer.setNodeManagers(mgrs.data());
 
         // GIVEN
@@ -237,7 +237,7 @@ private Q_SLOTS:
                 QVERIFY(renderer.glResourceManagers()->glTextureManager()->lookupResource(backend[i]->peerId()) !=
                         renderer.glResourceManagers()->glTextureManager()->lookupResource(backend[k]->peerId()));
 
-        QVector<Qt3DRender::Render::GLTexture *> glTextures;
+        QVector<Qt3DRender::Render::OpenGL::GLTexture *> glTextures;
         for (Qt3DRender::Render::Texture *t : backend)
             glTextures.push_back(renderer.glResourceManagers()->glTextureManager()->lookupResource(t->peerId()));
 
@@ -260,7 +260,7 @@ private Q_SLOTS:
     void generatorsShouldCreateSameData()
     {
         QScopedPointer<Qt3DRender::Render::NodeManagers> mgrs(new Qt3DRender::Render::NodeManagers());
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Qt3DRender::Render::OpenGL::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         renderer.setNodeManagers(mgrs.data());
 
         // GIVEN
@@ -525,7 +525,7 @@ private Q_SLOTS:
     void checkTextureImageProperlyReleaseGenerator()
     {
         QScopedPointer<Qt3DRender::Render::NodeManagers> mgrs(new Qt3DRender::Render::NodeManagers());
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Qt3DRender::Render::OpenGL::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         Qt3DRender::Render::TextureManager *texMgr = mgrs->textureManager();
         Qt3DRender::Render::TextureImageManager *texImgMgr = mgrs->textureImageManager();
         Qt3DRender::Render::TextureImageDataManager *texImgDataMgr = mgrs->textureImageDataManager();

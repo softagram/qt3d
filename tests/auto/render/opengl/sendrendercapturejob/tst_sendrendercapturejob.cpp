@@ -47,7 +47,7 @@ private Q_SLOTS:
 
         QImage image(10, 10, QImage::Format_ARGB32);
 
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Qt3DRender::Render::OpenGL::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         Qt3DRender::Render::SendRenderCaptureJob job;
 
         Qt3DRender::Render::NodeManagers nodeManagers;

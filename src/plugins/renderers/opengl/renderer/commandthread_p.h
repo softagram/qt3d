@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_COMMANDTHREAD_P_H
-#define QT3DRENDER_RENDER_COMMANDTHREAD_P_H
+#ifndef QT3DRENDER_RENDER_OPENGL_COMMANDTHREAD_P_H
+#define QT3DRENDER_RENDER_OPENGL_COMMANDTHREAD_P_H
 
 //
 //  W A R N I N G
@@ -63,9 +63,12 @@ namespace Qt3DRender {
 
 namespace Render {
 
+class OffscreenSurfaceHelper;
+
+namespace OpenGL {
+
 class Renderer;
 class GLCommand;
-class OffscreenSurfaceHelper;
 class GraphicsContext;
 
 class CommandThread : public QThread
@@ -75,7 +78,7 @@ public:
     explicit CommandThread(Renderer *renderer);
     ~CommandThread();
 
-    Render::Renderer* renderer() const { return m_renderer; }
+    Renderer* renderer() const { return m_renderer; }
 
     void initialize(QOpenGLContext *mainContext, OffscreenSurfaceHelper *offsreenSurfaceHelper);
     void shutdown();
@@ -84,7 +87,7 @@ public:
 
 private:
     void run() override;
-    void executeCommandInternal(Qt3DRender::Render::GLCommand *command);
+    void executeCommandInternal(GLCommand *command);
 
 private:
     Renderer* m_renderer;
@@ -101,10 +104,12 @@ private:
     QAtomicInt m_running;
 };
 
+} // OpenGL
+
 } // Render
 
 } // Qt3DRender
 
 QT_END_NAMESPACE
 
-#endif // QT3DRENDER_RENDER_COMMANDTHREAD_P_H
+#endif // QT3DRENDER_RENDER_OPENGL_COMMANDTHREAD_P_H

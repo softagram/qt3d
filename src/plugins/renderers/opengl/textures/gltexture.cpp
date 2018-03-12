@@ -61,6 +61,7 @@ using namespace Qt3DCore;
 
 namespace Qt3DRender {
 namespace Render {
+namespace OpenGL {
 
 GLTexture::GLTexture(TextureDataManager *texDataMgr,
                      TextureImageDataManager *texImgDataMgr,
@@ -464,6 +465,7 @@ void GLTexture::updateGLTextureParameters()
 }
 
 
+} // namespace OpenGL
 } // namespace Render
 } // namespace Qt3DRender
 

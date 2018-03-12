@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_GLBUFFERMANAGER_P_H
-#define QT3DRENDER_RENDER_GLBUFFERMANAGER_P_H
+#ifndef QT3DRENDER_RENDER_OPENGL_GLBUFFERMANAGER_P_H
+#define QT3DRENDER_RENDER_OPENGL_GLBUFFERMANAGER_P_H
 
 //
 //  W A R N I N G
@@ -60,12 +60,16 @@ namespace Qt3DRender {
 
 namespace Render {
 
+namespace OpenGL {
+
 class GLBufferManager : public Qt3DCore::QResourceManager<
         GLBuffer,
         Qt3DCore::QNodeId,
         Qt3DCore::NonLockingPolicy>
 {
 };
+
+} // OpenGL
 
 } // Render
 
@@ -74,4 +78,4 @@ class GLBufferManager : public Qt3DCore::QResourceManager<
 QT_END_NAMESPACE
 
 
-#endif // QT3DRENDER_RENDER_GLBUFFERMANAGER_P_H
+#endif // QT3DRENDER_RENDER_OPENGL_GLBUFFERMANAGER_P_H

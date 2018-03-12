@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_RENDERVIEWINITIALIZERJOB_H
-#define QT3DRENDER_RENDER_RENDERVIEWINITIALIZERJOB_H
+#ifndef QT3DRENDER_RENDER_OPENGL_RENDERVIEWINITIALIZERJOB_H
+#define QT3DRENDER_RENDER_OPENGL_RENDERVIEWINITIALIZERJOB_H
 
 //
 //  W A R N I N G
@@ -63,8 +63,11 @@ namespace Qt3DRender {
 
 namespace Render {
 
-class Renderer;
 class FrameGraphNode;
+
+namespace OpenGL {
+
+class Renderer;
 class RenderView;
 
 class OPENGL_RENDERER_EXPORT RenderViewInitializerJob : public Qt3DCore::QAspectJob
@@ -100,9 +103,10 @@ private:
 
 typedef QSharedPointer<RenderViewInitializerJob> RenderViewInitializerJobPtr;
 
+} // namespace OpenGL
 } // namespace Render
 } // namespace Qt3DRender
 
 QT_END_NAMESPACE
 
-#endif // QT3DRENDER_RENDER_RENDERVIEWINITIALIZERJOB_H
+#endif // QT3DRENDER_RENDER_OPENGL_RENDERVIEWINITIALIZERJOB_H

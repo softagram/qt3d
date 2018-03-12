@@ -54,6 +54,7 @@ QT_BEGIN_NAMESPACE
 
 namespace Qt3DRender {
 namespace Render {
+namespace OpenGL {
 
 GraphicsHelperES3_2::GraphicsHelperES3_2()
 {
@@ -97,6 +98,7 @@ void GraphicsHelperES3_2::bindFrameBufferAttachment(QOpenGLTexture *texture, con
     texture->release();
 }
 
+} // namespace OpenGL
 } // namespace Render
 } // namespace Qt3DRender
 

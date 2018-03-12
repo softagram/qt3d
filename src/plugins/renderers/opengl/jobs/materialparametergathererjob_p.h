@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_MATERIALPARAMETERGATHERERJOB_P_H
-#define QT3DRENDER_RENDER_MATERIALPARAMETERGATHERERJOB_P_H
+#ifndef QT3DRENDER_RENDER_OPENGL_MATERIALPARAMETERGATHERERJOB_P_H
+#define QT3DRENDER_RENDER_OPENGL_MATERIALPARAMETERGATHERERJOB_P_H
 
 //
 //  W A R N I N G
@@ -67,6 +67,8 @@ namespace Render {
 class NodeManagers;
 class TechniqueFilter;
 class RenderPassFilter;
+
+namespace OpenGL {
 class Renderer;
 
 // TO be executed for each FrameGraph branch with a given RenderPassFilter/TechniqueFilter
@@ -99,10 +101,12 @@ private:
 
 typedef QSharedPointer<MaterialParameterGathererJob> MaterialParameterGathererJobPtr;
 
+} // OpenGL
+
 } // Render
 
 } // Qt3DRender
 
 QT_END_NAMESPACE
 
-#endif // QT3DRENDER_RENDER_MATERIALPARAMETERGATHERERJOB_P_H
+#endif // QT3DRENDER_RENDER_OPENGL_MATERIALPARAMETERGATHERERJOB_P_H

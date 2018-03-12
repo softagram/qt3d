@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_RENDERQUEUE_H
-#define QT3DRENDER_RENDER_RENDERQUEUE_H
+#ifndef QT3DRENDER_RENDER_OPENGL_RENDERQUEUE_H
+#define QT3DRENDER_RENDER_OPENGL_RENDERQUEUE_H
 
 //
 //  W A R N I N G
@@ -61,6 +61,8 @@ QT_BEGIN_NAMESPACE
 namespace Qt3DRender {
 
 namespace Render {
+
+namespace OpenGL {
 
 class RenderView;
 
@@ -94,10 +96,12 @@ private:
     QMutex m_mutex;
 };
 
+} // namespace OpenGL
+
 } // namespace Render
 
 } // namespace Qt3DRender
 
 QT_END_NAMESPACE
 
-#endif // QT3DRENDER_RENDER_RENDERQUEUE_H
+#endif // QT3DRENDER_RENDER_OPENGL_RENDERQUEUE_H

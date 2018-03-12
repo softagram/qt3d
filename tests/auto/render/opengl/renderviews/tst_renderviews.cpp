@@ -47,6 +47,8 @@ namespace Qt3DRender {
 
 namespace Render {
 
+namespace OpenGL {
+
 namespace {
 
 void compareShaderParameterPacks(const ShaderParameterPack &t1,
@@ -129,7 +131,7 @@ private Q_SLOTS:
             QCOMPARE(backendBarrier.waitOperations(), barriers);
 
             // WHEN
-            Qt3DRender::Render::setRenderViewConfigFromFrameGraphLeafNode(&renderView, &backendBarrier);
+            Qt3DRender::Render::OpenGL::setRenderViewConfigFromFrameGraphLeafNode(&renderView, &backendBarrier);
 
             // THEN
             QCOMPARE(backendBarrier.waitOperations(), renderView.memoryBarrier());
@@ -141,7 +143,7 @@ private Q_SLOTS:
     {
         // GIVEN
         Qt3DRender::Render::NodeManagers nodeManagers;
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         RenderView renderView;
         QVector<RenderCommand *> rawCommands;
         QVector<QSortPolicy::SortType> sortTypes;
@@ -175,7 +177,7 @@ private Q_SLOTS:
     {
         // GIVEN
         Qt3DRender::Render::NodeManagers nodeManagers;
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         RenderView renderView;
         QVector<RenderCommand *> rawCommands;
         QVector<QSortPolicy::SortType> sortTypes;
@@ -266,7 +268,7 @@ private Q_SLOTS:
         QFETCH(QVector<ShaderParameterPack>, expectedMinimizedParameters);
 
         Qt3DRender::Render::NodeManagers nodeManagers;
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         renderer.setNodeManagers(&nodeManagers);
 
         GLShaderManager *shaderManager = renderer.glResourceManagers()->glShaderManager();
@@ -308,7 +310,7 @@ private Q_SLOTS:
     {
         // GIVEN
         Qt3DRender::Render::NodeManagers nodeManagers;
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         RenderView renderView;
         QVector<RenderCommand *> rawCommands;
         QVector<QSortPolicy::SortType> sortTypes;
@@ -342,7 +344,7 @@ private Q_SLOTS:
     {
         // GIVEN
         Qt3DRender::Render::NodeManagers nodeManagers;
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         RenderView renderView;
         QVector<RenderCommand *> rawCommands;
         QVector<QSortPolicy::SortType> sortTypes;
@@ -376,7 +378,7 @@ private Q_SLOTS:
     {
         // GIVEN
         Qt3DRender::Render::NodeManagers nodeManagers;
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         RenderView renderView;
         QVector<RenderCommand *> rawCommands;
         QVector<QSortPolicy::SortType> sortTypes;
@@ -460,6 +462,8 @@ private Q_SLOTS:
 private:
 };
 
+} // OpenGL
+
 } // Render
 
 } // Qt3DRender
@@ -467,6 +471,6 @@ private:
 QT_END_NAMESPACE
 
 //APPLESS_
-QTEST_MAIN(Qt3DRender::Render::tst_RenderViews)
+QTEST_MAIN(Qt3DRender::Render::OpenGL::tst_RenderViews)
 
 #include "tst_renderviews.moc"

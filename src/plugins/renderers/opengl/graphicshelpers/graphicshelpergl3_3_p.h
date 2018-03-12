@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_GRAPHICSHELPERGL3_3_P_H
-#define QT3DRENDER_RENDER_GRAPHICSHELPERGL3_3_P_H
+#ifndef QT3DRENDER_RENDER_OPENGL_GRAPHICSHELPERGL3_3_P_H
+#define QT3DRENDER_RENDER_OPENGL_GRAPHICSHELPERGL3_3_P_H
 
 //
 //  W A R N I N G
@@ -63,6 +63,7 @@ class QOpenGLExtension_ARB_tessellation_shader;
 
 namespace Qt3DRender {
 namespace Render {
+namespace OpenGL {
 
 class OPENGL_RENDERER_EXPORT GraphicsHelperGL3_3 : public GraphicsHelperInterface
 {
@@ -166,6 +167,7 @@ private:
     QScopedPointer<QOpenGLExtension_ARB_tessellation_shader> m_tessFuncs;
 };
 
+} // namespace OpenGL
 } // namespace Render
 } // namespace Qt3DRender
 
@@ -173,4 +175,4 @@ QT_END_NAMESPACE
 
 #endif // !QT_OPENGL_ES_2
 
-#endif // QT3DRENDER_RENDER_GRAPHICSHELPERGL3_3_P_H
+#endif // QT3DRENDER_RENDER_OPENGL_GRAPHICSHELPERGL3_3_P_H

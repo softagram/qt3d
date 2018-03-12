@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_GLSHADER_P_H
-#define QT3DRENDER_RENDER_GLSHADER_P_H
+#ifndef QT3DRENDER_RENDER_OPENGL_GLSHADER_P_H
+#define QT3DRENDER_RENDER_OPENGL_GLSHADER_P_H
 
 //
 //  W A R N I N G
@@ -65,6 +65,8 @@ class QOpenGLShaderProgram;
 namespace Qt3DRender {
 
 namespace Render {
+
+namespace OpenGL {
 
 class OPENGL_RENDERER_EXPORT GLShader
 {
@@ -149,10 +151,12 @@ private:
     QMetaObject::Connection m_contextConnection;
 };
 
+} // OpenGL
+
 } // Render
 
 } // Qt3DRender
 
 QT_END_NAMESPACE
 
-#endif // QT3DRENDER_RENDER_GLSHADER_P_H
+#endif // QT3DRENDER_RENDER_OPENGL_GLSHADER_P_H

@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_GLSHADERMANAGER_P_H
-#define QT3DRENDER_RENDER_GLSHADERMANAGER_P_H
+#ifndef QT3DRENDER_RENDER_OPENGL_GLSHADERMANAGER_P_H
+#define QT3DRENDER_RENDER_OPENGL_GLSHADERMANAGER_P_H
 
 
 //
@@ -62,6 +62,8 @@ namespace Qt3DRender {
 
 namespace Render {
 
+namespace OpenGL {
+
 class OPENGL_RENDERER_EXPORT GLShaderManager : public APIShaderManager<GLShader>
 {
 public:
@@ -70,6 +72,8 @@ public:
     {}
 };
 
+} // OpenGL
+
 } // Render
 
 } // Qt3DRender
@@ -77,4 +81,4 @@ public:
 QT_END_NAMESPACE
 
 
-#endif // QT3DRENDER_RENDER_GLSHADERMANAGER_P_H
+#endif // QT3DRENDER_RENDER_OPENGL_GLSHADERMANAGER_P_H

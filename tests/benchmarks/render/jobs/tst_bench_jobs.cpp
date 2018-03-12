@@ -88,32 +88,32 @@ namespace Qt3DRender {
 
         QVector<Qt3DCore::QAspectJobPtr> worldTransformJob()
         {
-            static_cast<Render::Renderer *>(d_func()->m_renderer)->m_worldTransformJob->setRoot(d_func()->m_renderer->sceneRoot());
-            return QVector<Qt3DCore::QAspectJobPtr>() << static_cast<Render::Renderer *>(d_func()->m_renderer)->m_worldTransformJob;
+            static_cast<Render::OpenGL::Renderer *>(d_func()->m_renderer)->m_worldTransformJob->setRoot(d_func()->m_renderer->sceneRoot());
+            return QVector<Qt3DCore::QAspectJobPtr>() << static_cast<Render::OpenGL::Renderer *>(d_func()->m_renderer)->m_worldTransformJob;
         }
 
         QVector<Qt3DCore::QAspectJobPtr> updateBoundingJob()
         {
-            static_cast<Render::Renderer *>(d_func()->m_renderer)->m_updateWorldBoundingVolumeJob->setManager(d_func()->m_renderer->nodeManagers()->renderNodesManager());
-            return QVector<Qt3DCore::QAspectJobPtr>() << static_cast<Render::Renderer *>(d_func()->m_renderer)->m_updateWorldBoundingVolumeJob;
+            static_cast<Render::OpenGL::Renderer *>(d_func()->m_renderer)->m_updateWorldBoundingVolumeJob->setManager(d_func()->m_renderer->nodeManagers()->renderNodesManager());
+            return QVector<Qt3DCore::QAspectJobPtr>() << static_cast<Render::OpenGL::Renderer *>(d_func()->m_renderer)->m_updateWorldBoundingVolumeJob;
         }
 
         QVector<Qt3DCore::QAspectJobPtr> calculateBoundingVolumeJob()
         {
-            static_cast<Render::Renderer *>(d_func()->m_renderer)->m_calculateBoundingVolumeJob->setRoot(d_func()->m_renderer->sceneRoot());
-            return QVector<Qt3DCore::QAspectJobPtr>() << static_cast<Render::Renderer *>(d_func()->m_renderer)->m_calculateBoundingVolumeJob;
+            static_cast<Render::OpenGL::Renderer *>(d_func()->m_renderer)->m_calculateBoundingVolumeJob->setRoot(d_func()->m_renderer->sceneRoot());
+            return QVector<Qt3DCore::QAspectJobPtr>() << static_cast<Render::OpenGL::Renderer *>(d_func()->m_renderer)->m_calculateBoundingVolumeJob;
         }
 
         QVector<Qt3DCore::QAspectJobPtr> framePreparationJob()
         {
-            static_cast<Render::Renderer *>(d_func()->m_renderer)->m_updateShaderDataTransformJob->setManagers(d_func()->m_renderer->nodeManagers());
-            return QVector<Qt3DCore::QAspectJobPtr>() << static_cast<Render::Renderer *>(d_func()->m_renderer)->m_updateShaderDataTransformJob;
+            static_cast<Render::OpenGL::Renderer *>(d_func()->m_renderer)->m_updateShaderDataTransformJob->setManagers(d_func()->m_renderer->nodeManagers());
+            return QVector<Qt3DCore::QAspectJobPtr>() << static_cast<Render::OpenGL::Renderer *>(d_func()->m_renderer)->m_updateShaderDataTransformJob;
         }
 
         QVector<Qt3DCore::QAspectJobPtr> frameCleanupJob()
         {
-            static_cast<Render::Renderer *>(d_func()->m_renderer)->m_cleanupJob->setRoot(d_func()->m_renderer->sceneRoot());
-            return QVector<Qt3DCore::QAspectJobPtr>() << static_cast<Render::Renderer *>(d_func()->m_renderer)->m_cleanupJob;
+            static_cast<Render::OpenGL::Renderer *>(d_func()->m_renderer)->m_cleanupJob->setRoot(d_func()->m_renderer->sceneRoot());
+            return QVector<Qt3DCore::QAspectJobPtr>() << static_cast<Render::OpenGL::Renderer *>(d_func()->m_renderer)->m_cleanupJob;
         }
 
         QVector<Qt3DCore::QAspectJobPtr> renderBinJobs()
@@ -130,7 +130,7 @@ namespace Qt3DRender {
                 for (const Qt3DCore::QNodeCreatedChangeBasePtr change : creationChanges)
                     d_func()->createBackendNode(change);
 
-                static_cast<Qt3DRender::Render::Renderer *>(d_func()->m_renderer)->m_renderSceneRoot =
+                static_cast<Qt3DRender::Render::OpenGL::Renderer *>(d_func()->m_renderer)->m_renderSceneRoot =
                         d_func()->m_renderer->nodeManagers()
                         ->lookupResource<Qt3DRender::Render::Entity, Qt3DRender::Render::EntityManager>(root->id());
             }

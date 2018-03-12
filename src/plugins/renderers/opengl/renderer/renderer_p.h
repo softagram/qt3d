@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_RENDERER_H
-#define QT3DRENDER_RENDER_RENDERER_H
+#ifndef QT3DRENDER_RENDER_OPENGL_RENDERER_H
+#define QT3DRENDER_RENDER_OPENGL_RENDERER_H
 
 //
 //  W A R N I N G
@@ -128,29 +128,32 @@ class CommandExecuter;
 namespace Render {
 
 class CameraLens;
-class SubmissionContext;
 class FrameGraphNode;
 class Material;
 class Technique;
 class Shader;
 class Entity;
-class RenderCommand;
-class RenderQueue;
-class RenderView;
 class Effect;
 class RenderPass;
 class RenderThread;
-class CommandThread;
 class RenderStateSet;
 class VSyncFrameAdvanceService;
 class PickEventFilter;
 class NodeManagers;
-class GLResourceManagers;
-class GLShader;
 class ResourceAccessor;
 
 class UpdateLevelOfDetailJob;
 typedef QSharedPointer<UpdateLevelOfDetailJob> UpdateLevelOfDetailJobPtr;
+
+namespace OpenGL {
+
+class CommandThread;
+class SubmissionContext;
+class RenderCommand;
+class RenderQueue;
+class RenderView;
+class GLShader;
+class GLResourceManagers;
 
 using SynchronizerJobPtr = GenericLambdaJobPtr<std::function<void()>>;
 using IntrospectShadersJobPtr = GenericLambdaJobPtr<std::function<void()>>;
@@ -291,7 +294,7 @@ public:
         QSurface *surface;
     };
 
-    ViewSubmissionResultData submitRenderViews(const QVector<Render::RenderView *> &renderViews);
+    ViewSubmissionResultData submitRenderViews(const QVector<RenderView *> &renderViews);
 
     RendererCache *cache() { return &m_cache; }
 
@@ -412,9 +415,10 @@ private:
     QSharedPointer<ResourceAccessor> m_scene2DResourceAccessor;
 };
 
+} // namespace OpenGL
 } // namespace Render
 } // namespace Qt3DRender
 
 QT_END_NAMESPACE
 
-#endif // QT3DRENDER_RENDER_RENDERER_H
+#endif // QT3DRENDER_RENDER_OPENGL_RENDERER_H
