@@ -63,7 +63,7 @@ namespace Render {
 
 class Renderer;
 
-class LayerFilterNode : public FrameGraphNode
+class QT3DRENDERSHARED_PRIVATE_EXPORT LayerFilterNode : public FrameGraphNode
 {
 public:
     LayerFilterNode();

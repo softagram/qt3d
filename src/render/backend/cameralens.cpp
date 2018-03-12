@@ -39,11 +39,12 @@
 
 #include "cameralens_p.h"
 #include <Qt3DRender/qcameralens.h>
+#include <Qt3DRender/qrenderaspect.h>
 #include <Qt3DRender/private/nodemanagers_p.h>
 #include <Qt3DRender/private/managers_p.h>
 #include <Qt3DRender/private/qcameralens_p.h>
 #include <Qt3DRender/private/renderlogging_p.h>
-#include <Qt3DRender/private/renderer_p.h>
+#include <Qt3DRender/private/abstractrenderer_p.h>
 #include <Qt3DRender/private/entity_p.h>
 #include <Qt3DRender/private/sphere_p.h>
 #include <Qt3DRender/private/computefilteredboundingvolumejob_p.h>

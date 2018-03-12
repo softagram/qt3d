@@ -60,7 +60,7 @@ class QSurface;
 namespace Qt3DRender {
 namespace Render {
 
-class RenderSurfaceSelector : public Qt3DRender::Render::FrameGraphNode
+class QT3DRENDERSHARED_PRIVATE_EXPORT RenderSurfaceSelector : public Qt3DRender::Render::FrameGraphNode
 {
 public:
     RenderSurfaceSelector();

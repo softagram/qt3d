@@ -5,7 +5,6 @@ HEADERS += \
     $$PWD/parameterpack_p.h \
     $$PWD/rendertarget_p.h \
     $$PWD/attachmentpack_p.h \
-    $$PWD/qgraphicsutils_p.h \
     $$PWD/managers_p.h \
     $$PWD/handle_types_p.h \
     $$PWD/platformsurfacefilter_p.h \
@@ -64,10 +63,3 @@ SOURCES += \
     $$PWD/resourceaccessor.cpp \
     $$PWD/segmentsvisitor.cpp \
     $$PWD/pointsvisitor.cpp
-
-include($$QT3D_BUILD_ROOT/src/core/qt3dcore-config.pri)
-QT_FOR_CONFIG += 3dcore-private
-qtConfig(qt3d-profile-jobs): {
-  HEADERS += $$PWD/commandexecuter_p.h
-  SOURCES += $$PWD/commandexecuter.cpp
-}

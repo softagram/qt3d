@@ -61,7 +61,7 @@ namespace Render {
 
 class ComputeJobPrivate;
 
-class Q_AUTOTEST_EXPORT ComputeCommand : public BackendNode
+class QT3DRENDERSHARED_PRIVATE_EXPORT ComputeCommand : public BackendNode
 {
 public:
     ComputeCommand();

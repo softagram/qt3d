@@ -47,7 +47,6 @@
 #include <Qt3DRender/private/pickboundingvolumeutils_p.h>
 #include <Qt3DRender/private/qray3d_p.h>
 #include <Qt3DRender/private/sphere_p.h>
-#include <Qt3DRender/private/renderer_p.h>
 #include <Qt3DRender/private/rendersettings_p.h>
 #include <Qt3DRender/private/trianglesvisitor_p.h>
 

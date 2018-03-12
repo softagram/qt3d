@@ -58,6 +58,7 @@
 #include <Qt3DRender/private/qboundingvolumeprovider_p.h>
 #include <Qt3DRender/private/qcollisionqueryresult_p.h>
 #include <Qt3DRender/private/pickboundingvolumeutils_p.h>
+#include <Qt3DRender/private/qt3drender_global_p.h>
 #include <Qt3DRender/qpickevent.h>
 #include <QMouseEvent>
 #include <QKeyEvent>
@@ -72,7 +73,7 @@ namespace PickingUtils {
 typedef QVector<RayCasting::QCollisionQueryResult::Hit> HitList;
 }
 
-class Q_AUTOTEST_EXPORT PickBoundingVolumeJob : public AbstractPickingJob
+class QT3DRENDERSHARED_PRIVATE_EXPORT PickBoundingVolumeJob : public AbstractPickingJob
 {
 public:
     PickBoundingVolumeJob();

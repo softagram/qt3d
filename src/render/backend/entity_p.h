@@ -53,7 +53,7 @@
 //
 
 #include <Qt3DRender/private/backendnode_p.h>
-#include <Qt3DRender/private/renderer_p.h>
+#include <Qt3DRender/private/abstractrenderer_p.h>
 #include <Qt3DRender/private/handle_types_p.h>
 #include <Qt3DCore/qnodecreatedchange.h>
 #include <Qt3DCore/private/qentity_p.h>
@@ -80,7 +80,7 @@ class Sphere;
 class Renderer;
 class NodeManagers;
 
-class Q_AUTOTEST_EXPORT Entity : public BackendNode
+class QT3DRENDERSHARED_PRIVATE_EXPORT Entity : public BackendNode
 {
 public:
     Entity();

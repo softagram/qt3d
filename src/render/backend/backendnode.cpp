@@ -38,7 +38,7 @@
 ****************************************************************************/
 
 #include <private/backendnode_p.h>
-#include <private/renderer_p.h>
+#include <private/abstractrenderer_p.h>
 #include <private/resourceaccessor_p.h>
 #include <private/nodemanagers_p.h>
 

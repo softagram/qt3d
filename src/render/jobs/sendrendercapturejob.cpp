@@ -36,7 +36,6 @@
 
 #include "sendrendercapturejob_p.h"
 
-#include "Qt3DRender/private/renderer_p.h"
 #include "Qt3DRender/private/nodemanagers_p.h"
 #include "Qt3DRender/private/rendercapture_p.h"
 #include <Qt3DRender/private/job_common_p.h>

@@ -40,6 +40,7 @@
 #include "proximityfilter_p.h"
 #include <Qt3DRender/private/qproximityfilter_p.h>
 #include <Qt3DCore/qpropertyupdatedchange.h>
+#include <Qt3DRender/private/renderlogging_p.h>
 
 QT_BEGIN_NAMESPACE
 

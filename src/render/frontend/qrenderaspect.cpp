@@ -42,7 +42,7 @@
 
 #include <Qt3DRender/private/nodemanagers_p.h>
 #include <Qt3DRender/private/texturedatamanager_p.h>
-#include <Qt3DRender/private/renderer_p.h>
+#include <Qt3DRender/private/abstractrenderer_p.h>
 #include <Qt3DRender/private/scenemanager_p.h>
 #include <Qt3DRender/private/geometryrenderermanager_p.h>
 
@@ -57,8 +57,10 @@
 #include <Qt3DRender/qmesh.h>
 #include <Qt3DRender/qparameter.h>
 #include <Qt3DRender/qrenderpassfilter.h>
+#include <Qt3DRender/qrenderpass.h>
 #include <Qt3DRender/qrendertargetselector.h>
 #include <Qt3DRender/qtechniquefilter.h>
+#include <Qt3DRender/qtechnique.h>
 #include <Qt3DRender/qviewport.h>
 #include <Qt3DRender/qrendertarget.h>
 #include <Qt3DRender/qclearbuffers.h>
@@ -97,7 +99,7 @@
 #include <Qt3DRender/private/cameralens_p.h>
 #include <Qt3DRender/private/filterkey_p.h>
 #include <Qt3DRender/private/entity_p.h>
-#include <Qt3DRender/private/renderer_p.h>
+#include <Qt3DRender/private/abstractrenderer_p.h>
 #include <Qt3DRender/private/shaderdata_p.h>
 #include <Qt3DRender/private/renderpassfilternode_p.h>
 #include <Qt3DRender/private/rendertargetselectornode_p.h>
@@ -153,6 +155,8 @@
 
 #include <private/qrenderpluginfactory_p.h>
 #include <private/qrenderplugin_p.h>
+
+#include <Qt3DRender/private/qrendererpluginfactory_p.h>
 
 #include <Qt3DCore/qentity.h>
 #include <Qt3DCore/qtransform.h>
@@ -548,8 +552,10 @@ void QRenderAspect::onRegistered()
     Q_D(QRenderAspect);
     d->m_nodeManagers = new Render::NodeManagers();
 
-    // TO DO: Load proper Renderer class based on Qt configuration preferences
-    d->m_renderer = new Render::Renderer(d->m_renderType);
+    // Load proper Renderer class based on Qt configuration preferences
+    d->m_renderer = d->loadRendererPlugin();
+    Q_ASSERT(d->m_renderer);
+
     d->m_renderer->setNodeManagers(d->m_nodeManagers);
 
     // Create a helper for deferring creation of an offscreen surface used during cleanup
@@ -635,6 +641,20 @@ void QRenderAspectPrivate::loadSceneParsers()
         if (sceneIOHandler != nullptr)
             m_sceneImporter.append(sceneIOHandler);
     }
+}
+
+Render::AbstractRenderer *QRenderAspectPrivate::loadRendererPlugin()
+{
+    // Note: for now we load the first renderer plugin that is successfully loaded
+    // In the future we might want to offer the user a way to hint at which renderer
+    // plugin would best be loaded
+    const QStringList keys = Render::QRendererPluginFactory::keys();
+    for (const QString &key : keys) {
+        Render::AbstractRenderer *renderer = Render::QRendererPluginFactory::create(key, m_renderType);
+        if (renderer)
+            return renderer;
+    }
+    return nullptr;
 }
 
 void QRenderAspectPrivate::loadRenderPlugin(const QString &pluginName)
