@@ -57,7 +57,6 @@
 #include <Qt3DCore/private/qresourcemanager_p.h>
 #include <Qt3DRender/private/statemask_p.h>
 #include <Qt3DRender/private/qt3drender_global_p.h>
-//#include <Qt3DRender/private/statevariant_p.h>
 #include <QList>
 #include <QVector3D>
 #include <QOpenGLContext>
