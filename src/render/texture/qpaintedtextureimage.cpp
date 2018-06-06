@@ -69,6 +69,7 @@ namespace Qt3DRender {
 
 QPaintedTextureImagePrivate::QPaintedTextureImagePrivate()
     : m_imageSize(256,256)
+    , m_devicePixelRatio(1)
     , m_generation(0)
 {
 }
@@ -80,8 +81,13 @@ QPaintedTextureImagePrivate::~QPaintedTextureImagePrivate()
 void QPaintedTextureImagePrivate::repaint()
 {
     // create or re-allocate QImage with current size
-    if (m_image.isNull() || (m_image->size() != m_imageSize))
+    if (m_image.isNull()
+            || m_image->size() != m_imageSize
+            || m_image->devicePixelRatio() != m_devicePixelRatio)
+    {
         m_image.reset(new QImage(m_imageSize, QImage::Format_RGBA8888));
+        m_image->setDevicePixelRatio(m_devicePixelRatio);
+    }
 
     QPainter painter(m_image.data());
     q_func()->paint(&painter);
@@ -140,6 +146,25 @@ QSize QPaintedTextureImage::size() const
 }
 
 /*!
+    \property QPaintedTextureImage::devicePixelRatio
+
+    This property hold the device pixel ratio for the underlying QImage.
+
+    QPaintedTextureImage renders offscreen and the texture it produces is not
+    necessarily used directly on any specific screen. However, if the size
+    includes a scale factor from a screen or window, it becomes important to
+    communicate this scale factor so that the underlying QImage and QPainter
+    can utilize this information. This is made possible by this property.
+
+    \sa size
+ */
+qreal QPaintedTextureImage::devicePixelRatio() const
+{
+    Q_D(const QPaintedTextureImage);
+    return d->m_devicePixelRatio;
+}
+
+/*!
     Sets the width (\a w) of the texture image. Triggers an update, if the size changes.
  */
 void QPaintedTextureImage::setWidth(int w)
@@ -188,6 +213,19 @@ void QPaintedTextureImage::setSize(QSize size)
 
         Q_EMIT sizeChanged(d->m_imageSize);
 
+        d->repaint();
+    }
+}
+
+/*!
+    Sets the scale factor. Triggers an update when the value is different than before.
+ */
+void QPaintedTextureImage::setDevicePixelRatio(qreal scaleFactor)
+{
+    Q_D(QPaintedTextureImage);
+    if (d->m_devicePixelRatio != scaleFactor) {
+        d->m_devicePixelRatio = scaleFactor;
+        Q_EMIT devicePixelRatioChanged(scaleFactor);
         d->repaint();
     }
 }

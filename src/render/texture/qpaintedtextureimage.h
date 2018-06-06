@@ -56,6 +56,7 @@ class QT3DRENDERSHARED_EXPORT QPaintedTextureImage : public QAbstractTextureImag
     Q_PROPERTY(int width READ width WRITE setWidth NOTIFY widthChanged)
     Q_PROPERTY(int height READ height WRITE setHeight NOTIFY heightChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
+    Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio WRITE setDevicePixelRatio NOTIFY devicePixelRatioChanged)
 
 public:
     explicit QPaintedTextureImage(Qt3DCore::QNode *parent = nullptr);
@@ -64,6 +65,7 @@ public:
     int width() const;
     int height() const;
     QSize size() const;
+    qreal devicePixelRatio() const;
 
     void update(const QRect &rect = QRect());
 
@@ -71,11 +73,13 @@ public Q_SLOTS:
     void setWidth(int w);
     void setHeight(int h);
     void setSize(QSize size);
+    void setDevicePixelRatio(qreal scaleFactor);
 
 Q_SIGNALS:
     void widthChanged(int w);
     void heightChanged(int w);
     void sizeChanged(QSize size);
+    void devicePixelRatioChanged(qreal scaleFactor);
 
 protected:
     virtual void paint(QPainter *painter) = 0;
