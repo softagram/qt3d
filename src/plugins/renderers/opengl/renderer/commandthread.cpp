@@ -51,6 +51,8 @@ namespace Qt3DRender {
 
 namespace Render {
 
+namespace OpenGL {
+
 CommandThread::CommandThread(Renderer *renderer)
     : QThread()
     , m_renderer(renderer)
@@ -188,6 +190,8 @@ void CommandThread::run()
         m_commandExecutionSemaphore.release();
     }
 }
+
+} // OpenGL
 
 } // Render
 

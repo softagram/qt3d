@@ -75,6 +75,7 @@ using namespace Qt3DCore;
 
 namespace Qt3DRender {
 namespace Render {
+namespace OpenGL {
 
 /*!
     \internal
@@ -532,6 +533,7 @@ bool ParameterInfo::operator<(const int otherNameId) const Q_DECL_NOEXCEPT
     return nameId < otherNameId;
 }
 
+} // namespace OpenGL
 } // namespace Render
 } // namespace Qt3DRender
 

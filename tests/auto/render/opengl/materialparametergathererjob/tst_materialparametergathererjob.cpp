@@ -95,9 +95,9 @@ public:
         d_func()->m_renderer->initialize();
     }
 
-    Render::MaterialParameterGathererJobPtr materialGathererJob() const
+    Render::OpenGL::MaterialParameterGathererJobPtr materialGathererJob() const
     {
-        Render::MaterialParameterGathererJobPtr job = Render::MaterialParameterGathererJobPtr::create();
+        Render::OpenGL::MaterialParameterGathererJobPtr job = Render::OpenGL::MaterialParameterGathererJobPtr::create();
         job->setNodeManagers(nodeManagers());
         return job;
     }
@@ -220,7 +220,7 @@ private Q_SLOTS:
         // GIVEN
         Qt3DCore::QEntity *sceneRoot = buildScene(viewportFrameGraph());
         Qt3DRender::TestAspect testAspect(sceneRoot);
-        Qt3DRender::Render::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
+        Qt3DRender::Render::OpenGL::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
 
         testAspect.initializeRenderer();
 
@@ -240,7 +240,7 @@ private Q_SLOTS:
         TestMaterial material;
         Qt3DCore::QEntity *sceneRoot = buildScene(viewportFrameGraph(), &material);
         Qt3DRender::TestAspect testAspect(sceneRoot);
-        Qt3DRender::Render::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
+        Qt3DRender::Render::OpenGL::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
 
         testAspect.initializeRenderer();
 
@@ -262,7 +262,7 @@ private Q_SLOTS:
         material.setEnabled(false);
         Qt3DCore::QEntity *sceneRoot = buildScene(viewportFrameGraph(), &material);
         Qt3DRender::TestAspect testAspect(sceneRoot);
-        Qt3DRender::Render::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
+        Qt3DRender::Render::OpenGL::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
 
         testAspect.initializeRenderer();
 
@@ -294,7 +294,7 @@ private Q_SLOTS:
 
         Qt3DCore::QEntity *sceneRoot = buildScene(frameGraphFilter, &material);
         Qt3DRender::TestAspect testAspect(sceneRoot);
-        Qt3DRender::Render::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
+        Qt3DRender::Render::OpenGL::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
 
         testAspect.initializeRenderer();
 
@@ -334,7 +334,7 @@ private Q_SLOTS:
 
         Qt3DCore::QEntity *sceneRoot = buildScene(frameGraphFilter, &material);
         Qt3DRender::TestAspect testAspect(sceneRoot);
-        Qt3DRender::Render::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
+        Qt3DRender::Render::OpenGL::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
 
         testAspect.initializeRenderer();
 
@@ -370,7 +370,7 @@ private Q_SLOTS:
 
         Qt3DCore::QEntity *sceneRoot = buildScene(frameGraphFilter, &material);
         Qt3DRender::TestAspect testAspect(sceneRoot);
-        Qt3DRender::Render::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
+        Qt3DRender::Render::OpenGL::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
 
         testAspect.initializeRenderer();
 
@@ -404,7 +404,7 @@ private Q_SLOTS:
 
         Qt3DCore::QEntity *sceneRoot = buildScene(frameGraphFilter, &material);
         Qt3DRender::TestAspect testAspect(sceneRoot);
-        Qt3DRender::Render::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
+        Qt3DRender::Render::OpenGL::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
 
         testAspect.initializeRenderer();
 
@@ -444,7 +444,7 @@ private Q_SLOTS:
 
         Qt3DCore::QEntity *sceneRoot = buildScene(frameGraphFilter, &material);
         Qt3DRender::TestAspect testAspect(sceneRoot);
-        Qt3DRender::Render::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
+        Qt3DRender::Render::OpenGL::MaterialParameterGathererJobPtr gatherer = testAspect.materialGathererJob();
 
         testAspect.initializeRenderer();
 

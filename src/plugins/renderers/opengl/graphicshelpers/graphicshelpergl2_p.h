@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_GRAPHICSHELPERGL2_H
-#define QT3DRENDER_RENDER_GRAPHICSHELPERGL2_H
+#ifndef QT3DRENDER_RENDER_OPENGL_GRAPHICSHELPERGL2_H
+#define QT3DRENDER_RENDER_OPENGL_GRAPHICSHELPERGL2_H
 
 //
 //  W A R N I N G
@@ -63,6 +63,7 @@ class QOpenGLExtension_ARB_framebuffer_object;
 
 namespace Qt3DRender {
 namespace Render {
+namespace OpenGL {
 
 class OPENGL_RENDERER_EXPORT GraphicsHelperGL2 : public GraphicsHelperInterface
 {
@@ -165,6 +166,7 @@ private:
     QOpenGLExtension_ARB_framebuffer_object *m_fboFuncs;
 };
 
+} // namespace OpenGL
 } // namespace Render
 } // namespace Qt3DRender
 
@@ -172,4 +174,4 @@ QT_END_NAMESPACE
 
 #endif // !QT_OPENGL_ES_2
 
-#endif // QT3DRENDER_RENDER_GRAPHICSHELPERGL2_H
+#endif // QT3DRENDER_RENDER_OPENGL_GRAPHICSHELPERGL2_H

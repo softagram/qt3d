@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_RENDERBUFFER_P_H
-#define QT3DRENDER_RENDER_RENDERBUFFER_P_H
+#ifndef QT3DRENDER_RENDER_OPENGL_RENDERBUFFER_P_H
+#define QT3DRENDER_RENDER_OPENGL_RENDERBUFFER_P_H
 
 //
 //  W A R N I N G
@@ -60,6 +60,7 @@ class QOpenGLContext;
 
 namespace Qt3DRender {
 namespace Render {
+namespace OpenGL {
 
 class OPENGL_RENDERER_EXPORT RenderBuffer
 {
@@ -83,9 +84,10 @@ private:
     QOpenGLContext *m_context;
 };
 
+} // namespace OpenGL
 } // namespace Render
 } // namespace Qt3DRender
 
 QT_END_NAMESPACE
 
-#endif // QT3DRENDER_RENDER_RENDERBUFFER_P_H
+#endif // QT3DRENDER_RENDER_OPENGL_RENDERBUFFER_P_H

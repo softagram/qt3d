@@ -81,14 +81,14 @@ public:
         return d_func()->m_renderer->nodeManagers();
     }
 
-    Render::Renderer *renderer() const
+    Render::OpenGL::Renderer *renderer() const
     {
-        return static_cast<Render::Renderer *>(d_func()->m_renderer);
+        return static_cast<Render::OpenGL::Renderer *>(d_func()->m_renderer);
     }
 
-    Render::MaterialParameterGathererJobPtr materialGathererJob() const
+    Render::OpenGL::MaterialParameterGathererJobPtr materialGathererJob() const
     {
-        Render::MaterialParameterGathererJobPtr job = Render::MaterialParameterGathererJobPtr::create();
+        Render::OpenGL::MaterialParameterGathererJobPtr job = Render::OpenGL::MaterialParameterGathererJobPtr::create();
         job->setNodeManagers(nodeManagers());
         return job;
     }
@@ -180,7 +180,7 @@ private Q_SLOTS:
 
         {
             // WHEN
-            Qt3DRender::Render::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
+            Qt3DRender::Render::OpenGL::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
 
             // THEN
             QCOMPARE(renderViewBuilder.renderViewIndex(), 0);
@@ -214,14 +214,14 @@ private Q_SLOTS:
             QVERIFY(renderViewBuilder.filterEntityByLayerJob().isNull());
             QVERIFY(renderViewBuilder.syncFilterEntityByLayerJob().isNull());
 
-            QCOMPARE(renderViewBuilder.renderViewBuilderJobs().size(), Qt3DRender::Render::RenderViewBuilder::optimalJobCount());
+            QCOMPARE(renderViewBuilder.renderViewBuilderJobs().size(), Qt3DRender::Render::OpenGL::RenderViewBuilder::optimalJobCount());
             QCOMPARE(renderViewBuilder.materialGathererJobs().size(), 0);
-            QCOMPARE(renderViewBuilder.buildJobHierachy().size(), 11 + 1 * Qt3DRender::Render::RenderViewBuilder::optimalJobCount());
+            QCOMPARE(renderViewBuilder.buildJobHierachy().size(), 11 + 1 * Qt3DRender::Render::OpenGL::RenderViewBuilder::optimalJobCount());
         }
 
         {
             // WHEN
-            Qt3DRender::Render::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
+            Qt3DRender::Render::OpenGL::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
             renderViewBuilder.setLayerCacheNeedsToBeRebuilt(true);
             renderViewBuilder.prepareJobs();
 
@@ -231,22 +231,22 @@ private Q_SLOTS:
             QVERIFY(!renderViewBuilder.syncFilterEntityByLayerJob().isNull());
 
             // mark jobs dirty and recheck
-            QCOMPARE(renderViewBuilder.buildJobHierachy().size(), 13 + 1 * Qt3DRender::Render::RenderViewBuilder::optimalJobCount());
+            QCOMPARE(renderViewBuilder.buildJobHierachy().size(), 13 + 1 * Qt3DRender::Render::OpenGL::RenderViewBuilder::optimalJobCount());
         }
 
         {
             // WHEN
-            Qt3DRender::Render::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
+            Qt3DRender::Render::OpenGL::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
             renderViewBuilder.setMaterialGathererCacheNeedsToBeRebuilt(true);
             renderViewBuilder.prepareJobs();
 
             // THEN
             QCOMPARE(renderViewBuilder.materialGathererCacheNeedsToBeRebuilt(), true);
-            QCOMPARE(renderViewBuilder.materialGathererJobs().size(), Qt3DRender::Render::RenderViewBuilder::optimalJobCount());
+            QCOMPARE(renderViewBuilder.materialGathererJobs().size(), Qt3DRender::Render::OpenGL::RenderViewBuilder::optimalJobCount());
             QVERIFY(!renderViewBuilder.syncMaterialGathererJob().isNull());
 
             // mark jobs dirty and recheck
-            QCOMPARE(renderViewBuilder.buildJobHierachy().size(), 12 + 2 * Qt3DRender::Render::RenderViewBuilder::optimalJobCount());
+            QCOMPARE(renderViewBuilder.buildJobHierachy().size(), 12 + 2 * Qt3DRender::Render::OpenGL::RenderViewBuilder::optimalJobCount());
         }
     }
 
@@ -263,7 +263,7 @@ private Q_SLOTS:
 
         {
             // WHEN
-            Qt3DRender::Render::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
+            Qt3DRender::Render::OpenGL::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
             renderViewBuilder.prepareJobs();
             renderViewBuilder.buildJobHierachy();
 
@@ -335,7 +335,7 @@ private Q_SLOTS:
         }
         {
             // WHEN
-            Qt3DRender::Render::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
+            Qt3DRender::Render::OpenGL::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
             renderViewBuilder.setLayerCacheNeedsToBeRebuilt(true);
             renderViewBuilder.prepareJobs();
             renderViewBuilder.buildJobHierachy();
@@ -423,7 +423,7 @@ private Q_SLOTS:
         QVERIFY(leafNode != nullptr);
 
         // WHEN
-        Qt3DRender::Render::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
+        Qt3DRender::Render::OpenGL::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
         renderViewBuilder.prepareJobs();
         renderViewBuilder.buildJobHierachy();
         renderViewBuilder.renderViewJob()->run();
@@ -444,7 +444,7 @@ private Q_SLOTS:
         QVERIFY(leafNode != nullptr);
 
         // WHEN
-        Qt3DRender::Render::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
+        Qt3DRender::Render::OpenGL::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
         renderViewBuilder.prepareJobs();
         renderViewBuilder.buildJobHierachy();
         renderViewBuilder.renderableEntityFilterJob()->run();
@@ -465,7 +465,7 @@ private Q_SLOTS:
         QVERIFY(leafNode != nullptr);
 
         // WHEN
-        Qt3DRender::Render::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
+        Qt3DRender::Render::OpenGL::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
         renderViewBuilder.prepareJobs();
         renderViewBuilder.buildJobHierachy();
         renderViewBuilder.computableEntityFilterJob()->run();
@@ -494,7 +494,7 @@ private Q_SLOTS:
 
         {
             // WHEN
-            Qt3DRender::Render::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
+            Qt3DRender::Render::OpenGL::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
             renderViewBuilder.prepareJobs();
             renderViewBuilder.buildJobHierachy();
 
@@ -518,7 +518,7 @@ private Q_SLOTS:
         }
         {
             // WHEN
-            Qt3DRender::Render::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
+            Qt3DRender::Render::OpenGL::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
             renderViewBuilder.setLayerCacheNeedsToBeRebuilt(true);
             renderViewBuilder.prepareJobs();
             renderViewBuilder.buildJobHierachy();
@@ -564,7 +564,7 @@ private Q_SLOTS:
         QVERIFY(leafNode != nullptr);
 
         // WHEN
-        Qt3DRender::Render::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
+        Qt3DRender::Render::OpenGL::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
         renderViewBuilder.prepareJobs();
         renderViewBuilder.buildJobHierachy();
 
@@ -594,7 +594,7 @@ private Q_SLOTS:
         QVERIFY(leafNode != nullptr);
 
         // WHEN
-        Qt3DRender::Render::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
+        Qt3DRender::Render::OpenGL::RenderViewBuilder renderViewBuilder(leafNode, 0, testAspect.renderer());
         renderViewBuilder.setLayerCacheNeedsToBeRebuilt(true);
         renderViewBuilder.prepareJobs();
         renderViewBuilder.buildJobHierachy();
@@ -614,7 +614,7 @@ private Q_SLOTS:
         std::sort(renderableEntity.begin(), renderableEntity.end());
 
         // WHEN
-        renderableEntity = Qt3DRender::Render::RenderViewBuilder::entitiesInSubset(renderableEntity, filteredEntity);
+        renderableEntity = Qt3DRender::Render::OpenGL::RenderViewBuilder::entitiesInSubset(renderableEntity, filteredEntity);
 
         // THEN
         QCOMPARE(renderableEntity.size(), 100);

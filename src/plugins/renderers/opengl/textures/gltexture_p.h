@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_GLTEXTURE_H
-#define QT3DRENDER_RENDER_GLTEXTURE_H
+#ifndef QT3DRENDER_RENDER_OPENGL_GLTEXTURE_H
+#define QT3DRENDER_RENDER_OPENGL_GLTEXTURE_H
 
 //
 //  W A R N I N G
@@ -70,9 +70,14 @@ class QOpenGLTexture;
 namespace Qt3DRender {
 namespace Render {
 
+template<class APITexture, class APITextureImage>
+class APITextureManager;
+
 class TextureImageManager;
 class TextureDataManager;
 class TextureImageDataManager;
+
+namespace OpenGL {
 class RenderBuffer;
 
 /**
@@ -176,7 +181,7 @@ public:
 
 protected:
     template<class APITexture, class APITextureImage>
-    friend class APITextureManager;
+    friend class Render::APITextureManager;
 
     /*
      * These methods are to be accessed from the GLTextureManager.
@@ -240,9 +245,10 @@ private:
     QVector<QTextureImageDataPtr> m_imageData;
 };
 
+} // namespace OpenGL
 } // namespace Render
 } // namespace Qt3DRender
 
 QT_END_NAMESPACE
 
-#endif // QT3DRENDER_RENDER_GLTEXTURE_H
+#endif // QT3DRENDER_RENDER_OPENGL_GLTEXTURE_H

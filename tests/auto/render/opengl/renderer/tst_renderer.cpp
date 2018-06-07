@@ -48,7 +48,7 @@ private Q_SLOTS:
     {
         // GIVEN
         Qt3DRender::Render::NodeManagers nodeManagers;
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Qt3DRender::Render::OpenGL::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         Qt3DRender::Render::OffscreenSurfaceHelper offscreenHelper(&renderer);
         Qt3DRender::Render::RenderSettings settings;
         // owned by FG manager
@@ -69,7 +69,7 @@ private Q_SLOTS:
         // NOTE: FilterCompatibleTechniqueJob and ShaderGathererJob cannot run because the context
         // is not initialized in this test
 
-        const int singleRenderViewJobCount = 11 + 1 * Qt3DRender::Render::RenderViewBuilder::optimalJobCount();
+        const int singleRenderViewJobCount = 11 + 1 * Qt3DRender::Render::OpenGL::RenderViewBuilder::optimalJobCount();
         // RenderViewBuilder renderViewJob,
         //                   renderableEntityFilterJob,
         //                   lightGatherJob,

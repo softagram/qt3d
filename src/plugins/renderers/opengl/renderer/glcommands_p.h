@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_GLCOMMANDS_P_H
-#define QT3DRENDER_RENDER_GLCOMMANDS_P_H
+#ifndef QT3DRENDER_RENDER_OPENGL_GLCOMMANDS_P_H
+#define QT3DRENDER_RENDER_OPENGL_GLCOMMANDS_P_H
 
 //
 //  W A R N I N G
@@ -60,9 +60,12 @@ namespace Qt3DRender {
 
 namespace Render {
 
+class Shader;
+
+namespace OpenGL {
+
 class GraphicsContext;
 class Renderer;
-class Shader;
 
 class GLCommand
 {
@@ -80,10 +83,13 @@ public:
 private:
     Shader *m_shader = nullptr;
 };
+
+} // OpenGL
+
 } // Render
 
 } // Qt3DRender
 
 QT_END_NAMESPACE
 
-#endif // QT3DRENDER_RENDER_GLCOMMANDS_P_H
+#endif // QT3DRENDER_RENDER_OPENGL_GLCOMMANDS_P_H

@@ -91,6 +91,11 @@ public:
     void submitPendingNotifications();
     inline bool hasPendingNotifications() const { return !m_pendingNotifications.empty(); }
 
+    // Set by Renderer plugin
+    void setLog(const QString &log);
+    void setStatus(QShaderProgram::Status status);
+    void initializeFromReference(const Shader &other);
+
 private:
     void initializeFromPeer(const Qt3DCore::QNodeCreatedChangeBasePtr &change) final;
 
@@ -102,12 +107,6 @@ private:
     bool m_dirty;
 
     QVector<Qt3DCore::QPropertyUpdatedChangePtr> m_pendingNotifications;
-
-    void initializeFromReference(const Shader &other);
-    void setLog(const QString &log);
-    void setStatus(QShaderProgram::Status status);
-
-    friend class GraphicsContext;
 };
 
 #ifndef QT_NO_DEBUG_STREAM

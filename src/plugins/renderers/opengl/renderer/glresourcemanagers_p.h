@@ -59,11 +59,13 @@ QT_BEGIN_NAMESPACE
 namespace Qt3DRender {
 
 namespace Render {
+class NodeManagers;
+
+namespace OpenGL {
 
 class GLBufferManager;
 class GLShaderManager;
 class GLTextureManager;
-class NodeManagers;
 class VAOManager;
 
 class OPENGL_RENDERER_EXPORT GLResourceManagers
@@ -84,6 +86,8 @@ private:
     GLTextureManager *m_glTextureManager;
     VAOManager *m_vaoManager;
 };
+
+} // OpenGL
 
 } // Render
 

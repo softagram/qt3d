@@ -49,6 +49,8 @@ namespace Qt3DRender {
 
 namespace Render {
 
+namespace OpenGL {
+
 LoadShaderCommand::LoadShaderCommand(Shader *shader)
     : m_shader(shader)
 {
@@ -61,6 +63,8 @@ void LoadShaderCommand::execute(Renderer *renderer, GraphicsContext *ctx)
     GLResourceManagers *glResourceManagers = renderer->glResourceManagers();
     ctx->loadShader(m_shader, nodeManagers->shaderManager(), glResourceManagers->glShaderManager());
 }
+
+} // OpenGL
 
 } // Render
 

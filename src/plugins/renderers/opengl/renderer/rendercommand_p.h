@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_RENDERCOMMAND_H
-#define QT3DRENDER_RENDER_RENDERCOMMAND_H
+#ifndef QT3DRENDER_RENDER_OPENGL_RENDERCOMMAND_H
+#define QT3DRENDER_RENDER_OPENGL_RENDERCOMMAND_H
 
 //
 //  W A R N I N G
@@ -71,6 +71,9 @@ namespace Qt3DRender {
 namespace Render {
 
 class RenderStateSet;
+
+namespace OpenGL {
+
 class GLShader;
 
 class OPENGL_RENDERER_EXPORT RenderCommand
@@ -124,10 +127,12 @@ public:
     bool m_isValid;
 };
 
+} // namespace OpenGL
+
 } // namespace Render
 
 } // namespace Qt3DRender
 
 QT_END_NAMESPACE
 
-#endif // QT3DRENDER_RENDER_RENDERCOMMAND_H
+#endif // QT3DRENDER_RENDER_OPENGL_RENDERCOMMAND_H

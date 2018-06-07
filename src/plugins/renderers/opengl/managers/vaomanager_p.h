@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT3DRENDER_RENDER_VAOMANAGER_P_H
-#define QT3DRENDER_RENDER_VAOMANAGER_P_H
+#ifndef QT3DRENDER_RENDER_OPENGL_VAOMANAGER_P_H
+#define QT3DRENDER_RENDER_OPENGL_VAOMANAGER_P_H
 
 //
 //  W A R N I N G
@@ -61,6 +61,8 @@ namespace Qt3DRender {
 
 namespace Render {
 
+namespace OpenGL {
+
 class OPENGL_RENDERER_EXPORT VAOManager : public Qt3DCore::QResourceManager<
         OpenGLVertexArrayObject,
         VAOIdentifier,
@@ -70,12 +72,14 @@ public:
     VAOManager() {}
 };
 
+} // OpenGL
+
 } // Render
 
 } // Qt3DRender
 
-Q_DECLARE_RESOURCE_INFO(Qt3DRender::Render::OpenGLVertexArrayObject, Q_REQUIRES_CLEANUP)
+Q_DECLARE_RESOURCE_INFO(Qt3DRender::Render::OpenGL::OpenGLVertexArrayObject, Q_REQUIRES_CLEANUP)
 
 QT_END_NAMESPACE
 
-#endif // QT3DRENDER_RENDER_VAOMANAGER_P_H
+#endif // QT3DRENDER_RENDER_OPENGL_VAOMANAGER_P_H

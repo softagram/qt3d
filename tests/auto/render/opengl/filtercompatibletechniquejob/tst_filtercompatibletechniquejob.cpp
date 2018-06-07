@@ -96,9 +96,9 @@ public:
         renderer()->submissionContext()->beginDrawing(m_window.data());
     }
 
-    Render::Renderer *renderer() const
+    Render::OpenGL::Renderer *renderer() const
     {
-        return static_cast<Render::Renderer *>(d_func()->m_renderer);
+        return static_cast<Render::OpenGL::Renderer *>(d_func()->m_renderer);
     }
 
     void onRegistered() { QRenderAspect::onRegistered(); }
@@ -175,7 +175,7 @@ private Q_SLOTS:
     void checkInitialState()
     {
         // GIVEN
-        Qt3DRender::Render::FilterCompatibleTechniqueJob backendFilterCompatibleTechniqueJob;
+        Qt3DRender::Render::OpenGL::FilterCompatibleTechniqueJob backendFilterCompatibleTechniqueJob;
 
         // THEN
         QVERIFY(backendFilterCompatibleTechniqueJob.manager() == nullptr);
@@ -183,7 +183,7 @@ private Q_SLOTS:
 
         // WHEN
         Qt3DRender::Render::TechniqueManager techniqueManager;
-        Qt3DRender::Render::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
+        Qt3DRender::Render::OpenGL::Renderer renderer(Qt3DRender::QRenderAspect::Synchronous);
         backendFilterCompatibleTechniqueJob.setManager(&techniqueManager);
         backendFilterCompatibleTechniqueJob.setRenderer(&renderer);
 
@@ -195,7 +195,7 @@ private Q_SLOTS:
     void checkRunRendererRunning()
     {
         // GIVEN
-        Qt3DRender::Render::FilterCompatibleTechniqueJob backendFilterCompatibleTechniqueJob;
+        Qt3DRender::Render::OpenGL::FilterCompatibleTechniqueJob backendFilterCompatibleTechniqueJob;
         Qt3DRender::TestAspect testAspect(buildTestScene());
 
         // WHEN

@@ -112,6 +112,7 @@ QOpenGLShader::ShaderType shaderType(Qt3DRender::QShaderProgram::ShaderType type
 
 namespace Qt3DRender {
 namespace Render {
+namespace OpenGL {
 
 namespace {
 
@@ -966,6 +967,7 @@ QT3D_UNIFORM_TYPE_IMPL(UniformType::Mat4x2, float, glUniformMatrix4x2fv)
 QT3D_UNIFORM_TYPE_IMPL(UniformType::Mat3x4, float, glUniformMatrix3x4fv)
 QT3D_UNIFORM_TYPE_IMPL(UniformType::Mat4x3, float, glUniformMatrix4x3fv)
 
+} // namespace OpenGL
 } // namespace Render
 } // namespace Qt3DRender of namespace
 

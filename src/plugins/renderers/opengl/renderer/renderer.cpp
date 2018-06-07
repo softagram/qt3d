@@ -139,6 +139,8 @@ using namespace Qt3DCore;
 
 namespace Qt3DRender {
 namespace Render {
+namespace OpenGL {
+
 /*!
     \internal
 
@@ -192,7 +194,7 @@ Renderer::Renderer(QRenderAspect::RenderType type)
     , m_updateSkinningPaletteJob(Render::UpdateSkinningPaletteJobPtr::create())
     , m_updateLevelOfDetailJob(Render::UpdateLevelOfDetailJobPtr::create())
     , m_updateMeshTriangleListJob(Render::UpdateMeshTriangleListJobPtr::create())
-    , m_filterCompatibleTechniqueJob(Render::FilterCompatibleTechniqueJobPtr::create())
+    , m_filterCompatibleTechniqueJob(FilterCompatibleTechniqueJobPtr::create())
     , m_bufferGathererJob(Render::GenericLambdaJobPtr<std::function<void ()>>::create([this] { lookForDirtyBuffers(); }, JobTypes::DirtyBufferGathering))
     , m_vaoGathererJob(Render::GenericLambdaJobPtr<std::function<void ()>>::create([this] { lookForAbandonedVaos(); }, JobTypes::DirtyVaoGathering))
     , m_textureGathererJob(Render::GenericLambdaJobPtr<std::function<void ()>>::create([this] { lookForDirtyTextures(); }, JobTypes::DirtyTextureGathering))
@@ -675,7 +677,7 @@ void Renderer::doRender(bool scene3dBlocking)
 
     // RenderQueue is complete (but that means it may be of size 0)
     if (canSubmit && (queueIsComplete && !queueIsEmpty)) {
-        const QVector<Render::RenderView *> renderViews = m_renderQueue->nextFrameQueue();
+        const QVector<RenderView *> renderViews = m_renderQueue->nextFrameQueue();
 
 #if QT_CONFIG(qt3d_profile_jobs)
         // Save start of frame
@@ -693,7 +695,7 @@ void Renderer::doRender(bool scene3dBlocking)
         if (canRender()) {
             { // Scoped to destroy surfaceLock
                 QSurface *surface = nullptr;
-                for (const Render::RenderView *rv: renderViews) {
+                for (const RenderView *rv: renderViews) {
                     surface = rv->surface();
                     if (surface)
                         break;
@@ -807,7 +809,7 @@ void Renderer::doRender(bool scene3dBlocking)
 // Called by RenderViewJobs
 // When the frameQueue is complete and we are using a renderThread
 // we allow the render thread to proceed
-void Renderer::enqueueRenderView(Render::RenderView *renderView, int submitOrder)
+void Renderer::enqueueRenderView(RenderView *renderView, int submitOrder)
 {
     QMutexLocker locker(m_renderQueue->mutex()); // Prevent out of order execution
     // We cannot use a lock free primitive here because:
@@ -1349,7 +1351,7 @@ void Renderer::downloadGLBuffers()
 
 // Happens in RenderThread context when all RenderViewJobs are done
 // Returns the id of the last bound FBO
-Renderer::ViewSubmissionResultData Renderer::submitRenderViews(const QVector<Render::RenderView *> &renderViews)
+Renderer::ViewSubmissionResultData Renderer::submitRenderViews(const QVector<RenderView *> &renderViews)
 {
     QElapsedTimer timer;
     quint64 queueElapsed = 0;
@@ -1365,7 +1367,7 @@ Renderer::ViewSubmissionResultData Renderer::submitRenderViews(const QVector<Ren
     uint lastBoundFBOId = m_submissionContext->boundFrameBufferObject();
     QSurface *surface = nullptr;
     QSurface *previousSurface = nullptr;
-    for (const Render::RenderView *rv: renderViews) {
+    for (const RenderView *rv: renderViews) {
         previousSurface = rv->surface();
         if (previousSurface)
             break;
@@ -2145,6 +2147,7 @@ QVector<Qt3DCore::QAspectJobPtr> Renderer::createRenderBufferJobs() const
     return dirtyBuffersJobs;
 }
 
+} // namespace OpenGL
 } // namespace Render
 } // namespace Qt3DRender
 

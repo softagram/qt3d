@@ -53,6 +53,7 @@ namespace Qt3DRender {
 
 namespace Render {
 
+namespace OpenGL {
 
 GLResourceManagers::GLResourceManagers(NodeManagers *nodeManagers)
     : m_nodeManagers(nodeManagers)
@@ -72,6 +73,8 @@ GLResourceManagers::~GLResourceManagers()
     delete m_glBufferManager;
     delete m_vaoManager;
 }
+
+} // OpenGL
 
 } // Render
 

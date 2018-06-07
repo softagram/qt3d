@@ -48,6 +48,8 @@ namespace Qt3DRender {
 
 namespace Render {
 
+namespace OpenGL {
+
 namespace {
 int renderViewInstanceCounter = 0;
 } // anonymous
@@ -97,6 +99,8 @@ void RenderViewBuilderJob::run()
 
 
 }
+
+} // OpenGL
 
 } // Render
 
