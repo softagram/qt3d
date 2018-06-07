@@ -41,7 +41,7 @@
 #include "framegraphvisitor_p.h"
 
 #include "framegraphnode_p.h"
-#include <Qt3DRender/private/renderer_p.h>
+#include <Qt3DRender/private/abstractrenderer_p.h>
 #include <Qt3DRender/private/managers_p.h>
 #include <QThreadPool>
 

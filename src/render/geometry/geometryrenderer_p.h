@@ -66,7 +66,7 @@ namespace Render {
 
 class GeometryRendererManager;
 
-class Q_AUTOTEST_EXPORT GeometryRenderer : public BackendNode
+class QT3DRENDERSHARED_PRIVATE_EXPORT GeometryRenderer : public BackendNode
 {
 public:
     GeometryRenderer();

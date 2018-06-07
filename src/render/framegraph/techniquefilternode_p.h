@@ -70,7 +70,7 @@ class QHandle;
 
 namespace Render {
 
-class TechniqueFilter
+class QT3DRENDERSHARED_PRIVATE_EXPORT TechniqueFilter
         : public FrameGraphNode
 {
 public:

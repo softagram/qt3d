@@ -71,7 +71,7 @@ namespace Render {
 class RenderPassManager;
 class RenderState;
 
-class Q_AUTOTEST_EXPORT RenderPass : public BackendNode
+class QT3DRENDERSHARED_PRIVATE_EXPORT RenderPass : public BackendNode
 {
 public:
     RenderPass();

@@ -72,7 +72,7 @@ namespace Render {
 class JointManager;
 class SkeletonManager;
 
-class Q_AUTOTEST_EXPORT Skeleton : public BackendNode
+class QT3DRENDERSHARED_PRIVATE_EXPORT Skeleton : public BackendNode
 {
 public:
     Skeleton();

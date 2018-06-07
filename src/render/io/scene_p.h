@@ -67,7 +67,7 @@ namespace Render {
 
 class SceneManager;
 
-class Q_AUTOTEST_EXPORT Scene : public BackendNode
+class QT3DRENDERSHARED_PRIVATE_EXPORT Scene : public BackendNode
 {
 public:
     Scene();

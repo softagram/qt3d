@@ -56,7 +56,7 @@
 #include <Qt3DCore/private/matrix4x4_p.h>
 #include <Qt3DCore/private/vector3d_p.h>
 #include <Qt3DCore/private/vector4d_p.h>
-
+#include <Qt3DRender/private/qt3drender_global_p.h>
 #include <QMatrix4x4>
 #include <QVector2D>
 #include <QVector3D>
@@ -104,7 +104,7 @@ enum UniformType {
     Unknown
 };
 
-class Q_AUTOTEST_EXPORT UniformValue
+class QT3DRENDERSHARED_PRIVATE_EXPORT UniformValue
 {
 public:
     enum ValueType {
@@ -236,7 +236,7 @@ private:
 };
 
 template<>
-Q_AUTOTEST_EXPORT void UniformValue::setData<QMatrix4x4>(const QVector<QMatrix4x4> &v);
+QT3DRENDERSHARED_PRIVATE_EXPORT void UniformValue::setData<QMatrix4x4>(const QVector<QMatrix4x4> &v);
 
 } // namespace Render
 } // namespace Qt3DRender

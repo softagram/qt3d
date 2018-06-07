@@ -38,7 +38,6 @@
 ****************************************************************************/
 
 #include "loadscenejob_p.h"
-#include <private/renderer_p.h>
 #include <private/nodemanagers_p.h>
 #include <private/scenemanager_p.h>
 #include <Qt3DCore/qentity.h>

@@ -62,7 +62,7 @@ namespace Render {
 
 class FrameGraphManager;
 
-class ClearBuffers : public FrameGraphNode
+class QT3DRENDERSHARED_PRIVATE_EXPORT ClearBuffers : public FrameGraphNode
 {
 public:
     ClearBuffers();

@@ -57,7 +57,7 @@
 #include <Qt3DRender/qtextureimagedata.h>
 #include <Qt3DRender/qtexturegenerator.h>
 #include <Qt3DRender/qtextureimagedatagenerator.h>
-#include <Qt3DRender/private/gltexture_p.h>
+#include <Qt3DRender/private/qt3drender_global_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -209,12 +209,12 @@ private:
     QVector<Entry> m_data;
 };
 
-class Q_AUTOTEST_EXPORT TextureDataManager
-        : public GeneratorDataManager<QTextureGeneratorPtr, QTextureDataPtr, GLTexture*>
+class QT3DRENDERSHARED_PRIVATE_EXPORT TextureDataManager
+        : public GeneratorDataManager<QTextureGeneratorPtr, QTextureDataPtr, void*>
 {
 };
 
-class Q_AUTOTEST_EXPORT TextureImageDataManager
+class QT3DRENDERSHARED_PRIVATE_EXPORT TextureImageDataManager
         : public GeneratorDataManager<QTextureImageDataGeneratorPtr, QTextureImageDataPtr, Qt3DCore::QNodeId>
 {
 };

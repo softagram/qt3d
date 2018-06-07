@@ -61,7 +61,7 @@ class QRenderTargetSelector;
 
 namespace Render {
 
-class RenderTargetSelector : public FrameGraphNode
+class QT3DRENDERSHARED_PRIVATE_EXPORT RenderTargetSelector : public FrameGraphNode
 {
 public:
     RenderTargetSelector();
