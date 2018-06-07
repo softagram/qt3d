@@ -30,6 +30,7 @@
 #define TESTRENDERER_H
 
 #include <Qt3DRender/private/abstractrenderer_p.h>
+#include <Qt3DRender/private/resourceaccessor_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -43,7 +44,11 @@ public:
     API api() const override { return AbstractRenderer::OpenGL; }
     qint64 time() const override { return 0; }
     void setTime(qint64 time) override { Q_UNUSED(time); }
-    void setNodeManagers(Qt3DRender::Render::NodeManagers *m) override { m_managers = m; }
+    void setNodeManagers(Qt3DRender::Render::NodeManagers *m) override
+    {
+        m_managers = m;
+        m_resourceAccessor.reset(new Qt3DRender::Render::ResourceAccessor(this, m_managers));
+    }
     void setServices(Qt3DCore::QServiceLocator *services) override { Q_UNUSED(services); }
     void setSurfaceExposed(bool exposed) override { Q_UNUSED(exposed); }
     Qt3DRender::Render::NodeManagers *nodeManagers() const override { return m_managers; }
@@ -84,12 +89,15 @@ public:
     QSurfaceFormat format() override;
 
     void setOpenGLContext(QOpenGLContext *) override {}
+    bool accessOpenGLTexture(Qt3DCore::QNodeId, QOpenGLTexture **, QMutex **) override { return false; }
+    QSharedPointer<Qt3DRender::Render::RenderBackendResourceAccessor> resourceAccessor() const override { return m_resourceAccessor; }
 
     void loadShader(Qt3DRender::Render::Shader *) const override {}
 
 protected:
     Qt3DRender::Render::AbstractRenderer::BackendNodeDirtySet m_changes;
     Qt3DRender::Render::NodeManagers *m_managers;
+    QSharedPointer<Qt3DRender::Render::ResourceAccessor> m_resourceAccessor;
 };
 
 QT_END_NAMESPACE

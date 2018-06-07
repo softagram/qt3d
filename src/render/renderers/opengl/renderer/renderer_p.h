@@ -145,6 +145,7 @@ class PickEventFilter;
 class NodeManagers;
 class GLResourceManagers;
 class GLShader;
+class ResourceAccessor;
 
 class UpdateLevelOfDetailJob;
 typedef QSharedPointer<UpdateLevelOfDetailJob> UpdateLevelOfDetailJobPtr;
@@ -253,7 +254,12 @@ public:
     bool requiresVAOAttributeUpdate(Geometry *geometry,
                                     RenderCommand *command) const;
 
+    // For Scene2D rendering
     void setOpenGLContext(QOpenGLContext *context) override;
+    bool accessOpenGLTexture(Qt3DCore::QNodeId nodeId, QOpenGLTexture **texture, QMutex **lock) override;
+    QSharedPointer<RenderBackendResourceAccessor> resourceAccessor() const override;
+
+
     const GraphicsApiFilterData *contextInfo() const;
     SubmissionContext *submissionContext() const;
 
@@ -400,6 +406,8 @@ private:
 
     QMetaObject::Connection m_contextConnection;
     RendererCache m_cache;
+
+    QSharedPointer<ResourceAccessor> m_scene2DResourceAccessor;
 };
 
 } // namespace Render

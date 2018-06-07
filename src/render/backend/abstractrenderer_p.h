@@ -63,6 +63,7 @@ QT_BEGIN_NAMESPACE
 
 class QSurface;
 class QSize;
+class QOpenGLTexture;
 
 namespace Qt3DCore {
 class QAbstractFrameAdvanceService;
@@ -85,6 +86,7 @@ class RenderSettings;
 class BackendNode;
 class OffscreenSurfaceHelper;
 class Shader;
+class RenderBackendResourceAccessor;
 
 class QT3DRENDERSHARED_PRIVATE_EXPORT AbstractRenderer
 {
@@ -171,8 +173,10 @@ public:
 
     virtual QVariant executeCommand(const QStringList &args) = 0;
 
-    // For QtQuick rendering
+    // For QtQuick rendering (Scene2D)
     virtual void setOpenGLContext(QOpenGLContext *ctx) = 0;
+    virtual bool accessOpenGLTexture(Qt3DCore::QNodeId nodeId, QOpenGLTexture **texture, QMutex **lock) = 0;
+    virtual QSharedPointer<RenderBackendResourceAccessor> resourceAccessor() const = 0;
 
     virtual void setOffscreenSurfaceHelper(OffscreenSurfaceHelper *helper) = 0;
     virtual QSurfaceFormat format() = 0;

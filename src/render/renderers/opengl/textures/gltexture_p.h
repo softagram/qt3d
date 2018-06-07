@@ -166,6 +166,8 @@ public:
         return m_dirtyFlags.load() != 0;
     }
 
+    // Only there to make Scene2D work, hopefully some day we can remove this
+    // nonsense
     QMutex *textureLock()
     {
         return &m_textureMutex;

@@ -75,10 +75,9 @@ void BackendNode::markDirty(AbstractRenderer::BackendNodeDirtySet changes)
     m_renderer->markDirty(changes, this);
 }
 
-QSharedPointer<RenderBackendResourceAccessor> BackendNode::resourceAccessor()
+QSharedPointer<RenderBackendResourceAccessor> BackendNode::resourceAccessor() const
 {
-    Render::Renderer *r = static_cast<Render::Renderer *>(renderer());
-    return r->nodeManagers()->resourceAccessor();
+    return m_renderer->resourceAccessor();
 }
 
 } // namespace Render

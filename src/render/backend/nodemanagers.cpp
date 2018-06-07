@@ -47,7 +47,6 @@
 #include <Qt3DRender/private/techniquemanager_p.h>
 #include <Qt3DRender/private/armature_p.h>
 #include <Qt3DRender/private/skeleton_p.h>
-#include <private/resourceaccessor_p.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -94,7 +93,6 @@ NodeManagers::NodeManagers()
     , m_armatureManager(new ArmatureManager())
     , m_skeletonManager(new SkeletonManager())
     , m_jointManager(new JointManager())
-    , m_resourceAccessor(new ResourceAccessor(this))
 {
 }
 
@@ -140,11 +138,6 @@ NodeManagers::~NodeManagers()
     delete m_armatureManager;
     delete m_skeletonManager;
     delete m_jointManager;
-}
-
-QSharedPointer<ResourceAccessor> NodeManagers::resourceAccessor()
-{
-    return m_resourceAccessor;
 }
 
 template<>
